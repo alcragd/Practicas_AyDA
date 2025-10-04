@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX 5000
+#define MAX 10000001
 
 typedef struct
 {
