@@ -12,3 +12,5 @@ typedef struct
 void HeapInit(heap *h);
 void HeapInsert(heap *h, int num);
 int HeapPop(heap *h);
+void HeapDestroy(heap *h);
+int HeapTop(heap *h);

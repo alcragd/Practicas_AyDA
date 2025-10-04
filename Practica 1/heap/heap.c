@@ -7,6 +7,21 @@ void HeapInit(heap *h)
     h->i = 0;
 }
 
+void HeapDestroy(heap *h)
+{
+    h->i = 0;
+}
+
+int HeapTop(heap *h)
+{
+    if (h->i == 0)
+    {
+        printf("\n[!]-- ERROR: Heap(h,n): \"Subesbordamiento de heap.\"");
+        exit(1);
+    }
+    return h->A[0];
+}
+
 void HeapInsert(heap *h, int num)
 {
     int padre, temp, i;
