@@ -37,7 +37,7 @@ void HeapInsert(heap *h, int num)
 
 int HeapPop(heap *h)
 {
-    int r, izq, der, i, padre, tmp;
+    int r, izq, der, i, padre, tmp, menor;
 
     if (h->i == 0)
     {
@@ -46,7 +46,8 @@ int HeapPop(heap *h)
     }
 
     r = h->A[0];
-    i = --h->i;
+    h->i--;
+    h->A[0] = h->A[h->i];
 
     padre = 0;
 
@@ -54,23 +55,23 @@ int HeapPop(heap *h)
     {
         izq = 2 * padre + 1;
         der = 2 * padre + 2;
+        menor = padre;
 
-        tmp = h->A[padre];
+        if (izq < h->i && h->A[izq] < h->A[menor])
+            menor = izq;
+        if (der < h->i && h->A[der] < h->A[menor])
+            menor = der;
 
-        if (izq < i && h->A[padre] > h->A[izq])
+        if (h->A[padre] > h->A[menor])
         {
-            h->A[padre] = h->A[izq];
-            h->A[izq] = tmp;
-            padre = izq;
-        }
-        else if (der < i && h->A[padre] > h->A[der])
-        {
-            h->A[padre] = h->A[der];
-            h->A[der] = tmp;
-            padre = der;
+            tmp = h->A[padre];
+            h->A[padre] = h->A[menor];
+            h->A[menor] = tmp;
         }
         else
             break;
+
+        padre = menor;
     }
 
     return r;
