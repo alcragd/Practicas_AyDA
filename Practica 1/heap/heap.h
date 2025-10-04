@@ -6,7 +6,9 @@
 typedef struct
 {
     int A[MAX];
+    int i;
 } heap;
 
-void HeapInsert(heap *h);
+void HeapInit(heap *h);
+void HeapInsert(heap *h, int num);
 int HeapPop(heap *h);
