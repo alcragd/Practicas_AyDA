@@ -1,3 +1,6 @@
+// Coyol Moreno Angel Zoe 2025
+// Implementación de un MinHeap en C
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "heap.h"
