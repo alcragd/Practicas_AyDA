@@ -1,38 +1,44 @@
-#include <stdio.h>
 #include <stdlib.h>
-#include "abb/abb.h"
+#include <stdio.h>
 #include "tiempo/tiempo.h"
 
-void TreeSortRecursivo(arbol_bin_busqueda *A, int *array, int *i);
-void TreeSort(int *A, int n);
+void MergeSort(int *A, int p, int r);
+void Merge(int *A, int p, int q, int r);
 
-int main(int argc, char **argv)
+int main(int num_args, char *args[])
 {
-    int i, n, *A;
+    if (num_args != 2)
+        exit(1);
+
+    int n, i, *A;
     double utime0, stime0, wtime0, utime1, stime1, wtime1; // Variables para medición de tiempos
 
-    if (argc != 2)
+    n = atoi(args[1]);
+    A = malloc(sizeof(int) * n);
+    if (A == NULL)
     {
+        printf("\n[!]-- Error al asignar memoria");
         exit(1);
     }
-
-    n = atoi(argv[1]);
-    A = malloc(n * sizeof(int));
-
     for (i = 0; i < n; i++)
+    {
         scanf("%d", &A[i]);
+    }
 
     // Iniciar el conteo del tiempo para las evaluaciones de rendimiento
     uswtime(&utime0, &stime0, &wtime0);
 
-    TreeSort(A, n);
+    // Llamar al algoritmo
+    MergeSort(A, 0, n - 1);
 
-    // Evaluar los tiempos de ejecución
+    /// Evaluar los tiempos de ejecución
     uswtime(&utime1, &stime1, &wtime1);
 
+    printf("\n\nORDENADO:\n");
     for (i = 0; i < n; i++)
+    {
         printf("%d\n", A[i]);
-    printf("\n");
+    }
 
     // Cálculo del tiempo de ejecución del programa
     printf("\n");
@@ -51,30 +57,58 @@ int main(int argc, char **argv)
     printf("\n");
     //******************************************************************
     free(A);
-    return 0;
 }
 
-void TreeSort(int *A, int n)
+void MergeSort(int *A, int p, int r)
 {
-    int i;
-    arbol_bin_busqueda tree;
-    Initialize_ABB(&tree);
-
-    for (i = 0; i < n; i++)
-        Insert_ABB(&tree, A[i]);
-
-    i = 0;
-    TreeSortRecursivo(&tree, A, &i);
-
-    Destroy_ABB(&tree);
-}
-
-void TreeSortRecursivo(arbol_bin_busqueda *A, int *array, int *i) // Recorrido InOrder
-{
-    if (*A != NULL)
+    int q;
+    if (p < r)
     {
-        TreeSortRecursivo(&((*A)->left), array, i);
-        array[(*i)++] = (*A)->num;
-        TreeSortRecursivo(&((*A)->right), array, i);
+        q = (p + r) / 2;
+        MergeSort(A, p, q);
+        MergeSort(A, q + 1, r);
+        Merge(A, p, q, r);
     }
+}
+
+void Merge(int *A, int p, int q, int r)
+{
+    int i, j, l, k, *C;
+    l = r - p + 1;
+    i = p;
+    j = q + 1;
+    C = malloc(l * sizeof(int));
+    for (k = 0; k <= (l - 1); k++)
+    {
+        if (i <= q && j <= r)
+        {
+            if (A[i] < A[j])
+            {
+                C[k] = A[i];
+                i++;
+            }
+            else
+            {
+                C[k] = A[j];
+                j++;
+            }
+        }
+        else if (i <= q)
+        {
+            C[k] = A[i];
+            i++;
+        }
+        else
+        {
+            C[k] = A[j];
+            j++;
+        }
+    }
+    k = p;
+    for (i = 0; i <= (l - 1); i++)
+    {
+        A[k] = C[i];
+        k++;
+    }
+    free(C);
 }
