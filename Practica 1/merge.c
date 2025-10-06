@@ -34,8 +34,7 @@ int main(int num_args, char *args[])
     /// Evaluar los tiempos de ejecución
     uswtime(&utime1, &stime1, &wtime1);
 
-    printf("\n\nORDENADO:\n");
-    for (i = 0; i < n; i++)
+       for (i = 0; i < n; i++)
     {
         printf("%d\n", A[i]);
     }
