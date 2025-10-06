@@ -74,28 +74,6 @@ void Destroy_ABB(arbol_bin_busqueda *A)
     *A = NULL;
 }
 
-posicion LeftSonABB(arbol_bin_busqueda *A)
-{
-    posicion p;
-    p = &((*A)->left);
-    return p;
-}
-
-posicion RightSonABB(arbol_bin_busqueda *A)
-{
-    posicion p;
-    p = &((*A)->right);
-    return p;
-}
-
-int GetNumABB(arbol_bin_busqueda *A, posicion p)
-{
-    if (!NullNode_ABB(A, p))
-        return p->num;
-    else
-        printf("\nGetKey_ABB(a,p): Posición invalida");
-}
-
 // void RecorridoInOrden(arbol_bin_busqueda *A)
 // {
 //     if (*A != NULL)
