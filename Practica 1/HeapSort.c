@@ -4,11 +4,16 @@
 
 void HeapSort(int *A, int n);
 
-int main()
+int main(int argc, char **argv)
 {
     int i, n, *A;
 
-    scanf("%d", &n);
+    if (argc != 2)
+    {
+        exit(1);
+    }
+
+    n = atoi(argv[1]);
 
     A = malloc(n * sizeof(int));
 
@@ -39,5 +44,6 @@ void HeapSort(int *A, int n)
         A[i] = HeapPop(h);
 
     HeapDestroy(h);
+    free(h);
     return;
 }

@@ -63,7 +63,7 @@ int HeapPop(heap *h)
         exit(1);
     }
 
-    r = h->A[0];
+    r = HeapTop(h);
     h->i--;
     h->A[0] = h->A[h->i];
 
