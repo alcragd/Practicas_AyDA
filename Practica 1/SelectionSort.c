@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "tiempo/tiempo.h"
 
-void Inserccion(int *A, int n);
+void Seleccion(int *A, int n);
 
 int main(int num_args, char *args[])
 {
@@ -30,16 +30,15 @@ int main(int num_args, char *args[])
     // Iniciar el conteo del tiempo para las evaluaciones de rendimiento
     uswtime(&utime0, &stime0, &wtime0);
 
-    Inserccion(A, n);
+    Seleccion(A, n);
 
-    /// Evaluar los tiempos de ejecución
+    // Evaluar los tiempos de ejecución
     uswtime(&utime1, &stime1, &wtime1);
 
-    for (i = 0; i < n; i++)
-    {
-        printf("%d\n", A[i]);
-    }
-
+    // for (i = 0; i < n; i++)
+    // {
+    //     printf("%d\n", A[i]);
+    // }
     // Cálculo del tiempo de ejecución del programa
     printf("\n");
     printf("real (Tiempo total)  %.10f s\n", wtime1 - wtime0);
@@ -59,18 +58,19 @@ int main(int num_args, char *args[])
     free(A);
 }
 
-void Inserccion(int *A, int n)
+void Seleccion(int *A, int n)
 {
-    int i, j, temp;
-    for (i = 0; i <= n - 1; i++)
+    int i, k, p, temp;
+    for (k = 0; k <= n - 2; k++)
     {
-        j = i;
-        temp = A[i];
-        while (j > 0 && temp < A[j - 1])
+        p = k;
+        for (i = k + 1; i <= n - 1; i++)
         {
-            A[j] = A[j - 1];
-            j--;
+            if (A[i] < A[p])
+                p = i;
         }
-        A[j] = temp;
+        temp = A[p];
+        A[p] = A[k];
+        A[k] = temp;
     }
 }

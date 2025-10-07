@@ -55,10 +55,10 @@ int main(int num_args, char *args[])
 
     // Impresion del arreglo de numeros ordenados
 
-    for (i = 0; i < n; i++)
-    {
-        printf("%d ", A[i]);
-    }
+    // for (i = 0; i < n; i++)
+    // {
+    //     printf("%d ", A[i]);
+    // }
 
     // Cálculo del tiempo de ejecución del programa
     printf("\n");

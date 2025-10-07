@@ -56,11 +56,11 @@ int main(int num_args, char *args[])
     uswtime(&utime1, &stime1, &wtime1);
 
     // Imprimir el arreglo ordenado
-    printf("\nArreglo ordenado:\n");
-    for (i = 0; i < n; i++)
-    {
-        printf("%d\n", A[i]);
-    }
+    // printf("\nArreglo ordenado:\n");
+    // for (i = 0; i < n; i++)
+    // {
+    //     printf("%d\n", A[i]);
+    // }
 
     // Liberar memoria y mostrar tiempo de ejecuci�n
 

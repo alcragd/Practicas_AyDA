@@ -34,10 +34,10 @@ int main(int num_args, char *args[])
     /// Evaluar los tiempos de ejecución
     uswtime(&utime1, &stime1, &wtime1);
 
-       for (i = 0; i < n; i++)
-    {
-        printf("%d\n", A[i]);
-    }
+    // for (i = 0; i < n; i++)
+    // {
+    //     printf("%d\n", A[i]);
+    // }
 
     // Cálculo del tiempo de ejecución del programa
     printf("\n");

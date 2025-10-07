@@ -37,11 +37,11 @@ int main(int num_args, char *args[])
     /// Evaluar los tiempos de ejecución
     uswtime(&utime1, &stime1, &wtime1);
 
-    printf("==== NUMEROS ORDENADOs: ====\n");
-    for (i = 0; i < n; i++)
-    {
-        printf("%d\n", A[i]);
-    }
+    // printf("==== NUMEROS ORDENADOs: ====\n");
+    // for (i = 0; i < n; i++)
+    // {
+    //     printf("%d\n", A[i]);
+    // }
     free(A);
     // Cálculo del tiempo de ejecución del programa
     printf("\n");

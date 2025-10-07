@@ -56,11 +56,11 @@ int main(int num_args, char *args[])
     uswtime(&utime1, &stime1, &wtime1);
 
     // Impresion del arreglo de numeros ordenados
-    printf("==== NUMEROS ORDENADOs: ====\n");
-    for (i = 0; i < n; i++)
-    {
-        printf("%d ", A[i]);
-    }
+    // printf("==== NUMEROS ORDENADOs: ====\n");
+    // for (i = 0; i < n; i++)
+    // {
+    //     printf("%d ", A[i]);
+    // }
 
     // Cálculo del tiempo de ejecución del programa
     printf("\n");
