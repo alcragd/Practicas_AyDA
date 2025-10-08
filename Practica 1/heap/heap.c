@@ -13,16 +13,34 @@ Compilacion: gcc heap.c -c
 #include <stdlib.h>
 #include "heap.h"
 
+/*
+void HeapInit(heap *h)
+Recibe: heap * Referencia/Direccion al heap
+Devuelve: void
+Observaciones: Funcion que inicializa el heap
+*/
 void HeapInit(heap *h)
 {
     h->i = 0;
 }
 
+/*
+void HeapDestroy(heap *h)
+Recibe: heap * Referencia/Direccion al heap
+Devuelve: void
+Observaciones: Funcion que destruye el heap
+*/
 void HeapDestroy(heap *h)
 {
     h->i = 0;
 }
 
+/*
+int HeapTop(heap *h)
+Recibe: heap * Referencia/Direccion al heap
+Devuelve: void
+Observaciones: Funcion que regresa el tope del heap
+*/
 int HeapTop(heap *h)
 {
     if (h->i == 0)
@@ -33,6 +51,12 @@ int HeapTop(heap *h)
     return h->A[0];
 }
 
+/*
+void HeapInsert(heap *h, int num)
+Recibe: heap * Referencia/Direccion al heap, int numero a insertar
+Devuelve: void
+Observaciones: Funcion que inserta un elemento al heap
+*/
 void HeapInsert(heap *h, int num)
 {
     int padre, temp, i;
@@ -49,6 +73,7 @@ void HeapInsert(heap *h, int num)
 
     padre = (i - 1) / 2;
 
+    // Acomoda el elemento insertado y sus padres en el heap
     while (i > 0 && h->A[i] < h->A[padre])
     {
 
@@ -61,6 +86,12 @@ void HeapInsert(heap *h, int num)
     }
 }
 
+/*
+int HeapPop(heap *h)
+Recibe: heap * Referencia/Direccion al heap
+Devuelve: int
+Observaciones: Funcion que extrae el elemento del tope del heap
+*/
 int HeapPop(heap *h)
 {
     int r, izq, der, i, padre, tmp, menor;

@@ -33,8 +33,5 @@ void Destroy_ABB(arbol_bin_busqueda *A);
 void Insert_ABB(arbol_bin_busqueda *A, int num);
 booleano Empty_ABB(arbol_bin_busqueda *A);
 booleano NullNode_ABB(arbol_bin_busqueda *A, posicion p);
-posicion LeftSonABB(arbol_bin_busqueda *A);
-posicion RightSonABB(arbol_bin_busqueda *A);
-int GetNumABB(arbol_bin_busqueda *A, posicion p);
 
 #endif //__TAD_ABB

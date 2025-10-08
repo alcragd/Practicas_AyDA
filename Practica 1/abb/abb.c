@@ -13,12 +13,24 @@ Compilacion: gcc abb.c -c
 #include <string.h>
 #include <stdlib.h>
 
+/*
+void Initialize_ABB(arbol_bin_busqueda *A)
+Recibe: abb * Referencia/Direccion al arbol
+Devuelve: void
+Observaciones: Funcion que inicializa el arbol
+*/
 void Initialize_ABB(arbol_bin_busqueda *A)
 {
     *A = NULL;
     return;
 }
 
+/*
+void Insert_ABB(arbol_bin_busqueda *A, int num)
+Recibe: abb * Referencia/Direccion al arbol, int numero a insertar
+Devuelve: void
+Observaciones: Funcion que inserta y acomoda un elemento al abb
+*/
 void Insert_ABB(arbol_bin_busqueda *A, int num)
 {
     nodo *newNode;
@@ -53,6 +65,12 @@ void Insert_ABB(arbol_bin_busqueda *A, int num)
     return;
 }
 
+/*
+booleano NullNode_ABB(arbol_bin_busqueda *A, posicion p)
+Recibe: abb * Referencia/Direccion al arbol, posicion p
+Devuelve: booleano
+Observaciones: Funcion que verifica si un nodo en un arbol es valido
+*/
 booleano NullNode_ABB(arbol_bin_busqueda *A, posicion p)
 {
     booleano b = TRUE;
@@ -68,6 +86,12 @@ booleano NullNode_ABB(arbol_bin_busqueda *A, posicion p)
     return b;
 }
 
+/*
+booleano Empty_ABB(arbol_bin_busqueda *A)
+Recibe: abb * Referencia/Direccion al arbol
+Devuelve: booleanon
+Observaciones: Funcion que verifica si un arbol està vacio
+*/
 booleano Empty_ABB(arbol_bin_busqueda *A)
 {
     if (*A == NULL)
@@ -75,6 +99,12 @@ booleano Empty_ABB(arbol_bin_busqueda *A)
     return FALSE;
 }
 
+/*
+void Destroy_ABB(arbol_bin_busqueda *A)
+Recibe: abb * Referencia/Direccion al arbol
+Devuelve: void
+Observaciones: Funcion recursiva que destruye un abb
+*/
 void Destroy_ABB(arbol_bin_busqueda *A)
 {
     if (*A == NULL)
@@ -84,14 +114,3 @@ void Destroy_ABB(arbol_bin_busqueda *A)
     free(*A);
     *A = NULL;
 }
-
-// void RecorridoInOrden(arbol_bin_busqueda *A)
-// {
-//     if (*A != NULL)
-//     {
-//         RecorridoInOrden(&((*A)->left));
-//         printf("%s:\n%s\n", (*A)->clave, (*A)->e.d);
-//         RecorridoInOrden(&((*A)->right));
-//     }
-//     return;
-// }
