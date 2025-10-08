@@ -70,6 +70,23 @@ int main(int num_args, char *args[])
     free(A);
 }
 
+/**
+ * Funcion: Seleccion
+ * --------------------
+ * Implementación del algoritmo de ordenamiento por Selección (SelectionSort).
+ *
+ * Parámetros:
+ *   A : apuntador al arreglo de enteros a ordenar.
+ *   n : número de elementos en el arreglo.
+ *
+ * Comportamiento:
+ *   - Recorre el arreglo buscando en cada iteración el elemento mínimo
+ *     en el subarreglo no ordenado.
+ *   - Intercambia el elemento mínimo encontrado con el primero del subarreglo.
+ *   - Repite este proceso hasta que el arreglo esté ordenado.
+ *
+ */
+
 void Seleccion(int *A, int n)
 {
     int i, k, p, temp;

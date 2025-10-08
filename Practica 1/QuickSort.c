@@ -73,6 +73,22 @@ int main(int num_args, char *args[])
     //******************************************************************
 }
 
+/**
+ * void QuickSort(int *A, int p, int r)
+ * --------------------
+ * Implementación recursiva del algoritmo de ordenamiento QuickSort.
+ *
+ * Parámetros:
+ *   A : apuntador al arreglo de enteros a ordenar.
+ *   p : índice inicial (límite inferior del subarreglo).
+ *   r : índice final (límite superior del subarreglo).
+ *
+ * Comportamiento:
+ *   - Selecciona un pivote dividiendo el arreglo en dos particiones.
+ *   - Ordena recursivamente los elementos a la izquierda y derecha del pivote.
+ *
+ */
+
 void QuickSort(int *A, int p, int r)
 {
     int j;
@@ -83,6 +99,24 @@ void QuickSort(int *A, int p, int r)
         QuickSort(A, j + 1, r);
     }
 }
+
+/**
+ * int Pivot(int *A, int p, int r)
+ * --------------------
+ * Realiza la partición del arreglo utilizando el primer elemento como pivote.
+ *
+ * Parámetros:
+ *   A : apuntador al arreglo de enteros.
+ *   p : índice inicial del subarreglo a particionar.
+ *   r : índice final del subarreglo a particionar.
+ *
+ * Retorno:
+ *   Índice (j) donde el pivote queda colocado en su posición definitiva,
+ *   de modo que:
+ *     - Todos los elementos a la izquierda son menores o iguales al pivote.
+ *     - Todos los elementos a la derecha son mayores al pivote.
+ */
+
 int Pivot(int *A, int p, int r)
 {
     int i, j, piv;
@@ -102,6 +136,24 @@ int Pivot(int *A, int p, int r)
     Intercambiar(A, p, j);
     return j;
 }
+
+/**
+ * void Intercambiar(int *A, int i, int j)
+ * --------------------
+ * Intercambia dos elementos dentro de un arreglo.
+ *
+ * Parámetros:
+ *   A : apuntador al arreglo de enteros.
+ *   i : índice del primer elemento.
+ *   j : índice del segundo elemento.
+ *
+ * Retorno:
+ *   Ninguno (void).
+ *
+ * Comportamiento:
+ *   Después de la llamada, A[i] y A[j] quedan intercambiados.
+ */
+
 void Intercambiar(int *A, int i, int j)
 {
     int temp;
