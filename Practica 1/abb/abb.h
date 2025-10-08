@@ -1,3 +1,12 @@
+/*
+Nombre del archivo: abb.h
+Version: 1.0 Octubre 2025
+Autores: Ramos Mendoza Miguel Angel / Coyol Moreno Angel Zoe / Ramirez Hernandez Christian Isaac
+
+Definición de estructuras y funciones para el manejo de Árbol Binario de Búsqueda (ABB)
+utilizado en el algoritmo TreeSort.
+*/
+
 #ifndef __TAD_ABB
 #define __TAD_ABB
 #include <stdio.h>

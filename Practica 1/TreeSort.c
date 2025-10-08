@@ -1,3 +1,15 @@
+/*
+Nombre del programa: TreeSort.c
+Version: 1.0 Octubre 2025
+Autores: Ramos Mendoza Miguel Angel / Coyol Moreno Angel Zoe / Ramirez Hernandez Christian Isaac
+
+Programa que lee n numeros y los coloca en un arreglo A,
+ejecuta el algoritmo TreeSort para ordenarlos de menor a mayor.
+
+Compilacion: gcc TreeSort.c tiempo/tiempo.c -o TreeSort
+Ejecucion: ./TreeSort n < numeros10millones.txt
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "abb/abb.h"

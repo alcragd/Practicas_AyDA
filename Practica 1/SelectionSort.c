@@ -1,3 +1,15 @@
+/*
+Nombre del programa: SelectionSort.c
+Version: 1.0 Octubre 2025
+Autores: Ramos Mendoza Miguel Angel / Coyol Moreno Angel Zoe / Ramirez Hernandez Christian Isaac
+
+Programa que lee n numeros y los coloca en un arreglo A,
+ejecuta el algoritmo SelectionSort para ordenarlos de menor a mayor.
+
+Compilacion: gcc SelectionSort.c -o SelectionSort.exe
+Ejecucion: ./SelectionSort.exe n < numeros10millones.txt
+*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "tiempo/tiempo.h"

@@ -1,14 +1,13 @@
 /*
-shell.c
-V 1.0 Marzo 2025
-Autor: Ramirez Hernandez Christian Isaac
+Nombre del programa: ShellSort.c
+Version: 1.0 Octubre 2025
+Autores: Ramos Mendoza Miguel Angel / Coyol Moreno Angel Zoe / Ramirez Hernandez Christian Isaac
 
-Programa que lee n n�meros desde la entrada est�ndar, los almacena en un arreglo din�mico,
-aplica el algoritmo de ordenamiento Shell Sort y mide el tiempo de ejecuci�n.
+Programa que lee n numeros y los coloca en un arreglo A,
+ejecuta el algoritmo ShellSort para ordenarlos de menor a mayor.
 
-Compilaci�n:
-Windows: gcc shell.c -o shell.exe
-Linux: gcc shell.c -o shell
+Compilacion: gcc ShellSort.c tiempo/tiempo.c -o ShellSort
+Ejecucion: ./ShellSort n < numeros10millones.txt
 */
 
 #include <stdio.h>

@@ -1,5 +1,13 @@
-// Coyol Moreno Angel Zoe 2025
-// Implementación de un MinHeap en C
+/*
+Nombre del programa: heap.c
+Version: 1.0 Octubre 2025
+Autor: Coyol Moreno Angel Zoe
+
+Implementación de las funciones para el manejo de Heap
+utilizado en el algoritmo HeapSort.
+
+Compilacion: gcc heap.c -c
+*/
 
 #include <stdio.h>
 #include <stdlib.h>

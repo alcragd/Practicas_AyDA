@@ -1,14 +1,14 @@
 /*
 Nombre del programa: burbujaSimple.c
-Version: 1.0 Septiembre 2025
+Version: 1.0 Octubre 2025
 Autores: Ramos Mendoza Miguel Angel / Coyol Moreno Angel Zoe / Ramirez Hernandez Christian Isaac
 
 Programa que lee n numeros y los coloca en un arreglo A,
 ejecuta un algoritmo que ordena los numeros de menor a mayor por metodo de
 burbuja simple
 
-Compilacion: gcc burbujaSimple.c -o burbujaSimple.exe
-Ejecucion: .\burbujaSimple.exe n < numeros10millones.txt
+Compilacion: gcc burbujaSimple.c tiempo/tiempo.c -o burbujaSimple
+Ejecucion: ./burbujaSimple n < numeros10millones.txt
 */
 #include <stdlib.h>
 #include <stdio.h>

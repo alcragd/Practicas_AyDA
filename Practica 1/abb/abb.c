@@ -1,3 +1,14 @@
+/*
+Nombre del programa: abb.c
+Version: 1.0 Octubre 2025
+Autores: Ramos Mendoza Miguel Angel / Coyol Moreno Angel Zoe / Ramirez Hernandez Christian Isaac
+
+Implementación de las funciones para el manejo de Árbol Binario de Búsqueda (ABB)
+utilizado en el algoritmo TreeSort.
+
+Compilacion: gcc abb.c -c
+*/
+
 #include "abb.h"
 #include <string.h>
 #include <stdlib.h>

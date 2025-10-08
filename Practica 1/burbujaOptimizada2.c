@@ -1,14 +1,23 @@
 /*
 Nombre del programa: burbujaOptimizada2.c
-Version: 1.0 Septiembre 2025
+Version: 1.0 Octubre 2025
 Autores: Ramos Mendoza Miguel Angel / Coyol Moreno Angel Zoe / Ramirez Hernandez Christian Isaac
 
 Programa que lee n numeros y los coloca en un arreglo A,
 ejecuta un algoritmo que ordena los numeros de menor a mayor por metodo de
-burbuja optimizada (2)
+burbuja optimizada (2).
 
-Compilacion: gcc burbujaOptimizada2.c -o burbujaOptimizada2.exe
-Ejecucion: .\burbujaOptimizada2.exe n < numeros10millones.txt
+Compilacion: gcc burbujaOptimizada2.c tiempo/tiempo.c -o burbujaOptimizada2
+Ejecucion: ./burbujaOptimizada2 n < numeros10millones.txt
+
+Dependencias:
+- tiempo/tiempo.h y tiempo/tiempo.c: Funciones para medición de tiempos de ejecución.
+
+El programa realiza las siguientes acciones:
+1. Lee n números desde la entrada estándar y los almacena en un arreglo.
+2. Ordena los números usando el método de burbuja optimizada (2).
+3. Mide los tiempos de ejecución (real, usuario, sistema, CPU/Wall).
+4. Muestra los resultados de los tiempos en formato decimal y exponencial.
 */
 #include <stdlib.h>
 #include <stdio.h>
@@ -87,7 +96,7 @@ void burbujaOptimizada2(int n, int *A)
 Recibe: int tamano del arreglo, int * Referencia/Direccion al arreglo A
 Devuelve: void
 Observaciones: Funcion que ordena n numeros de menor a mayor por
-metodo de burbuja optimizada (2)
+metodo de burbuja optimizada (2).
 */
 void burbujaOptimizada2(int n, int *A)
 {

@@ -1,3 +1,24 @@
+/*
+Nombre del programa: InsertionSort.c
+Version: 1.0 Octubre 2025
+Autores: Ramos Mendoza Miguel Angel / Coyol Moreno Angel Zoe / Ramirez Hernandez Christian Isaac
+
+Programa que lee n numeros y los coloca en un arreglo A,
+ejecuta el algoritmo InsertionSort para ordenarlos de menor a mayor.
+
+Compilacion: gcc InsertionSort.c tiempo/tiempo.c -o InsertionSort
+Ejecucion: ./InsertionSort n < numeros10millones.txt
+
+Dependencias:
+- tiempo/tiempo.h y tiempo/tiempo.c: Funciones para medición de tiempos de ejecución.
+
+El programa realiza las siguientes acciones:
+1. Lee n números desde la entrada estándar y los almacena en un arreglo.
+2. Ordena los números usando InsertionSort.
+3. Mide los tiempos de ejecución (real, usuario, sistema, CPU/Wall).
+4. Muestra los resultados de los tiempos en formato decimal y exponencial.
+*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "tiempo/tiempo.h"
@@ -59,6 +80,13 @@ int main(int num_args, char *args[])
     free(A);
 }
 
+/*
+void Inserccion(int *A, int n)
+Recibe: int * Referencia/Direccion al arreglo A, int tamano del arreglo
+Devuelve: void
+Observaciones: Funcion que ordena n numeros de menor a mayor por
+metodo de insercion directa (InsertionSort).
+*/
 void Inserccion(int *A, int n)
 {
     int i, j, temp;

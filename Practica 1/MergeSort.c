@@ -1,3 +1,24 @@
+/*
+Nombre del programa: MergeSort.c
+Version: 1.0 Octubre 2025
+Autores: Ramos Mendoza Miguel Angel / Coyol Moreno Angel Zoe / Ramirez Hernandez Christian Isaac
+
+Programa que lee n numeros y los coloca en un arreglo A,
+ejecuta el algoritmo MergeSort para ordenarlos de menor a mayor.
+
+Compilacion: gcc MergeSort.c tiempo/tiempo.c -o MergeSort
+Ejecucion: ./MergeSort n < numeros10millones.txt
+
+Dependencias:
+- tiempo/tiempo.h y tiempo/tiempo.c: Funciones para medición de tiempos de ejecución.
+
+El programa realiza las siguientes acciones:
+1. Lee n números desde la entrada estándar y los almacena en un arreglo.
+2. Ordena los números usando MergeSort.
+3. Mide los tiempos de ejecución (real, usuario, sistema, CPU/Wall).
+4. Muestra los resultados de los tiempos en formato decimal y exponencial.
+*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "tiempo/tiempo.h"
@@ -58,6 +79,13 @@ int main(int num_args, char *args[])
     free(A);
 }
 
+/*
+void MergeSort(int *A, int p, int r)
+Recibe: int * Referencia/Direccion al arreglo A, int p índice inicial, int r índice final
+Devuelve: void
+Observaciones: Funcion que ordena n numeros de menor a mayor por
+metodo MergeSort (ordenamiento por mezcla recursivo).
+*/
 void MergeSort(int *A, int p, int r)
 {
     int q;
@@ -70,6 +98,12 @@ void MergeSort(int *A, int p, int r)
     }
 }
 
+/*
+void Merge(int *A, int p, int q, int r)
+Recibe: int * Referencia/Direccion al arreglo A, int p índice inicial, int q índice medio, int r índice final
+Devuelve: void
+Observaciones: Funcion auxiliar que mezcla dos subarreglos ordenados en uno solo.
+*/
 void Merge(int *A, int p, int q, int r)
 {
     int i, j, l, k, *C;

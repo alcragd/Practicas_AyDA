@@ -1,5 +1,10 @@
-// Coyol Moreno Angel Zoe 2025
-// Implementación de un MinHeap en C
+/*
+Nombre del archivo: heap.h
+Version: 1.0 Octubre 2025
+Autor: Coyol Moreno Angel Zoe
+
+Definición de estructuras y funciones para el manejo de un MinHeap
+*/
 
 #include <stdio.h>
 #include <stdlib.h>

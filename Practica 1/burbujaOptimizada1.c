@@ -5,10 +5,19 @@ Autores: Ramos Mendoza Miguel Angel / Coyol Moreno Angel Zoe / Ramirez Hernandez
 
 Programa que lee n numeros y los coloca en un arreglo A,
 ejecuta un algoritmo que ordena los numeros de menor a mayor por metodo de
-burbuja optmimizada (1)
+burbuja optimizada (1).
 
-Compilacion: gcc burbujaOptimizada1.c -o burbujaOptimizada1.exe
-Ejecucion: .\burbujaOptimizada1.exe n < numeros10millones.txt
+Compilacion: gcc burbujaOptimizada1.c tiempo/tiempo.c -o burbujaOptimizada1
+Ejecucion: ./burbujaOptimizada1 n < numeros10millones.txt
+
+Dependencias:
+- tiempo/tiempo.h y tiempo/tiempo.c: Funciones para medición de tiempos de ejecución.
+
+El programa realiza las siguientes acciones:
+1. Lee n números desde la entrada estándar y los almacena en un arreglo.
+2. Ordena los números usando el método de burbuja optimizada (1).
+3. Mide los tiempos de ejecución (real, usuario, sistema, CPU/Wall).
+4. Muestra los resultados de los tiempos en formato decimal y exponencial.
 */
 #include <stdlib.h>
 #include <stdio.h>
@@ -86,7 +95,7 @@ void burbujaOptimizada1(int n, int *A)
 Recibe: int tamano del arreglo, int * Referencia/Direccion al arreglo A
 Devuelve: void
 Observaciones: Funcion que ordena n numeros de menor a mayor por
-metodo de burbuja optimizada (1)
+metodo de burbuja optimizada (1).
 */
 void burbujaOptimizada1(int n, int *A)
 {
