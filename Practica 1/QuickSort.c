@@ -124,9 +124,9 @@ int Pivot(int *A, int p, int r)
     i = p + 1;
     j = r;
 
-    while (i < j)
+    while (i <= j)
     {
-        while (A[i] <= piv && i < r)
+        while (i <= r && A[i] <= piv)
             i++;
         while (A[j] > piv)
             j--;
