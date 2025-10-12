@@ -25,27 +25,27 @@ x = [1000
 2000000];
 
 %% VALORES DE Y = F(x) EN SEGUNDOS
-y = [0.001578093
-0.011958838
-0.022105932
-0.0385499
-0.057709932
-0.175335884
-0.250952005
-6.514307022
-26.09675598
-57.87168813
-103.787035
-235.2228708
-413.0868309
-654.500252
-939.0713689
-1272.538475
-1657.482791
-2109.729407
-2611.896916
-5903.74287
-10590.18808
+y = [0.002321959
+0.00582099
+0.010045052
+0.019410133
+0.027104139
+0.062423945
+0.103622913
+2.337926149
+9.195359945
+20.72773695
+35.92016602
+82.95958805
+147.3512471
+229.3074861
+330.4306259
+447.0444081
+588.905952
+752.5585811
+926.231288
+2098.683022
+3760.108254
 ];
 
 %% CONFIGURACIÓN DE AJUSTES POLINOMIALES
@@ -61,7 +61,7 @@ figure('Units','normalized','Position',[0.1 0.1 0.7 0.6]);
 hold on;
 
 % PUNTOS EXPERIMENTALES
-plot(x, y, 'ko', 'MarkerFaceColor', 'k', 'DisplayName', 'Datos Experimentales BurbujaOptimizada1');
+plot(x, y, 'ko', 'MarkerFaceColor', 'k', 'DisplayName', 'Datos Experimentales SelectionSort');
 
 % AJUSTES POLINOMIALES
 for i = 1:length(grados)
@@ -110,7 +110,7 @@ text(0.05, 0.9 - (length(grados)+1)*0.05, ...
 grid on;
 xlabel('Tamaño del arreglo');
 ylabel('Tiempo (s)');
-title('Comparación de ajustes para BurbujaOptimizada1: Polinomiales, Logarítmico y n·ln(n)');
+title('Comparación de ajustes para SelectionSort: Polinomiales, Logarítmico y n·ln(n)');
 legend('Location', 'northwest');
-%set(gca, 'XScale', 'log');
+set(gca, 'XScale', 'log');
 hold off;
