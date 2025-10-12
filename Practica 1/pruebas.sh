@@ -28,7 +28,7 @@ for file in "$SRC_DIR"/*.c; do
 done
 echo "Compilación completada."
 
-ineficientes=("burbujaSimple" "burbujaOptimizada1" "burbujaOptimizada2" "InsertionSort" "SelectionSort")
+ineficientes=("burbujaSimple" "burbujaOptimizada1" "burbujaOptimizada2" "InsertionSort" "SelectionSort" "MergeSort" "ShellSort" "TreeSort" "HeapSort")
 
 # === PRIMERO LOS EFICIENTES ===
 for exe in "$OUT_DIR"/*.out; do
@@ -91,54 +91,54 @@ EOF
 done
 
 # === AHORA LOS INEFICIENTES ===
-for alg in "${ineficientes[@]}"; do
-    exe="${OUT_DIR}/${alg}.out"
-    if [[ -f "$exe" ]]; then
-        CSV_FILE="$CSV_DIR/${alg}.csv"
-        echo "N,TiempoReal,TiempoCPU,Tiempo E/S,% CPU/Wall" > "$CSV_FILE"
+# for alg in "${ineficientes[@]}"; do
+#     exe="${OUT_DIR}/${alg}.out"
+#     if [[ -f "$exe" ]]; then
+#         CSV_FILE="$CSV_DIR/${alg}.csv"
+#         echo "N,TiempoReal,TiempoCPU,Tiempo E/S,% CPU/Wall" > "$CSV_FILE"
 
-        echo "Ejecutando $alg..."
-        for N in "${TAM_N[@]}"; do
-            echo "  -> N=$N"
-            head -n $N "$NUM_FILE" | "$exe" $N > "$TMP_OUT"
+#         echo "Ejecutando $alg..."
+#         for N in "${TAM_N[@]}"; do
+#             echo "  -> N=$N"
+#             head -n $N "$NUM_FILE" | "$exe" $N > "$TMP_OUT"
 
-            real_time=$(grep -m1 "real" "$TMP_OUT" | awk '{print $(NF-1)}')
-            cpu_time=$(grep -m1 "user" "$TMP_OUT" | awk '{print $(NF-1)}')
-            es_time=$(grep -m1 "sys" "$TMP_OUT" | awk '{print $(NF-1)}')
-            cpu_wall=$(grep -m1 "CPU/Wall" "$TMP_OUT" | awk '{print $(NF-1)}')
+#             real_time=$(grep -m1 "real" "$TMP_OUT" | awk '{print $(NF-1)}')
+#             cpu_time=$(grep -m1 "user" "$TMP_OUT" | awk '{print $(NF-1)}')
+#             es_time=$(grep -m1 "sys" "$TMP_OUT" | awk '{print $(NF-1)}')
+#             cpu_wall=$(grep -m1 "CPU/Wall" "$TMP_OUT" | awk '{print $(NF-1)}')
 
-            [[ -z "$real_time" ]] && real_time=0
-            [[ -z "$cpu_time" ]] && cpu_time=0
-            [[ -z "$es_time" ]] && es_time=0
-            [[ -z "$cpu_wall" ]] && cpu_wall=0
+#             [[ -z "$real_time" ]] && real_time=0
+#             [[ -z "$cpu_time" ]] && cpu_time=0
+#             [[ -z "$es_time" ]] && es_time=0
+#             [[ -z "$cpu_wall" ]] && cpu_wall=0
 
-            echo "$N,$real_time,$cpu_time,$es_time,$cpu_wall %" >> "$CSV_FILE"
-        done
+#             echo "$N,$real_time,$cpu_time,$es_time,$cpu_wall %" >> "$CSV_FILE"
+#         done
 
-    # === Graficar comportamiento temporal del algoritmo ===
-gnuplot <<EOF
-set datafile separator ","
-set terminal pngcairo size 1000,700 enhanced font 'Arial,10'
-set output "$GRAPH_DIR/${name}_tiempos.png"
-set title "Comportamiento temporal - $name"
-set xlabel "Tamaño de problema (N)"
-set ylabel "Tiempo (s)"
-set grid
-set key outside
-stats "$CSV_FILE" using 1 nooutput
-min_x = STATS_min * 0.95
-max_x = STATS_max * 1.05
-set xrange [min_x:max_x]
-stats "$CSV_FILE" using 2 nooutput
-min_y = STATS_min * 0.95
-max_y = STATS_max * 1.10
-set yrange [min_y:max_y]
-plot "$CSV_FILE" every ::1 using 1:2 with points linecolor rgb "#1f77b4" pointtype 7 pointsize 1.5 title "Tiempo Real", \
-     "" every ::1 using 1:3 with points linecolor rgb "#2ca02c" pointtype 7 pointsize 1.5 title "Tiempo CPU", \
-     "" every ::1 using 1:4 with points linecolor rgb "#ff7f0e" pointtype 7 pointsize 1.5 title "Tiempo E/S"
-EOF
-    fi
-done
+#     # === Graficar comportamiento temporal del algoritmo ===
+# gnuplot <<EOF
+# set datafile separator ","
+# set terminal pngcairo size 1000,700 enhanced font 'Arial,10'
+# set output "$GRAPH_DIR/${name}_tiempos.png"
+# set title "Comportamiento temporal - $name"
+# set xlabel "Tamaño de problema (N)"
+# set ylabel "Tiempo (s)"
+# set grid
+# set key outside
+# stats "$CSV_FILE" using 1 nooutput
+# min_x = STATS_min * 0.95
+# max_x = STATS_max * 1.05
+# set xrange [min_x:max_x]
+# stats "$CSV_FILE" using 2 nooutput
+# min_y = STATS_min * 0.95
+# max_y = STATS_max * 1.10
+# set yrange [min_y:max_y]
+# plot "$CSV_FILE" every ::1 using 1:2 with points linecolor rgb "#1f77b4" pointtype 7 pointsize 1.5 title "Tiempo Real", \
+#      "" every ::1 using 1:3 with points linecolor rgb "#2ca02c" pointtype 7 pointsize 1.5 title "Tiempo CPU", \
+#      "" every ::1 using 1:4 with points linecolor rgb "#ff7f0e" pointtype 7 pointsize 1.5 title "Tiempo E/S"
+# EOF
+#     fi
+# done
 
 rm -f "$TMP_OUT"
 
