@@ -25,27 +25,27 @@ x = [1000
 2000000];
 
 %% VALORES DE Y = F(x) EN SEGUNDOS
-y = [0.001578093
-0.011958838
-0.022105932
-0.0385499
-0.057709932
-0.175335884
-0.250952005
-6.514307022
-26.09675598
-57.87168813
-103.787035
-235.2228708
-413.0868309
-654.500252
-939.0713689
-1272.538475
-1657.482791
-2109.729407
-2611.896916
-5903.74287
-10590.18808
+y = [0.000185013
+0.000440121
+0.001019001
+0.001244068
+0.001913071
+0.002369881
+0.003829002
+0.026273966
+0.055223942
+0.086506128
+0.14190197
+0.232756138
+0.38499403
+0.504781008
+0.579200029
+0.689131975
+0.81227088
+0.967460871
+1.16125679
+2.525167942
+3.377446175
 ];
 
 %% CONFIGURACIÓN DE AJUSTES POLINOMIALES
@@ -61,7 +61,7 @@ figure('Units','normalized','Position',[0.1 0.1 0.7 0.6]);
 hold on;
 
 % PUNTOS EXPERIMENTALES
-plot(x, y, 'ko', 'MarkerFaceColor', 'k', 'DisplayName', 'Datos Experimentales BurbujaOptimizada1');
+plot(x, y, 'ko', 'MarkerFaceColor', 'k', 'DisplayName', 'Datos Experimentales TreeSort');
 
 % AJUSTES POLINOMIALES
 for i = 1:length(grados)
@@ -110,7 +110,7 @@ text(0.05, 0.9 - (length(grados)+1)*0.05, ...
 grid on;
 xlabel('Tamaño del arreglo');
 ylabel('Tiempo (s)');
-title('Comparación de ajustes para BurbujaOptimizada1: Polinomiales, Logarítmico y n·ln(n)');
+title('Comparación de ajustes para TreeSort: Polinomiales, Logarítmico y n·ln(n)');
 legend('Location', 'northwest');
 %set(gca, 'XScale', 'log');
 hold off;
