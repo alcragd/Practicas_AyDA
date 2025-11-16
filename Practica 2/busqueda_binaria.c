@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int expSearch(int *A,int n,int v);
 int binarySearch(int *A,int n,int v);
 
 int main(int argc,char **argv){
@@ -17,10 +16,11 @@ int main(int argc,char **argv){
     for(int i=0;i<n;++i)
         scanf("%d",&A[i]);
 
-    res=expSearch(A,n,val);
+    res=binarySearch(A,n,val);
 
     printf("\n%d",res);
 
+    free(A);
     return 0;
 }
 

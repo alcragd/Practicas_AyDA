@@ -21,6 +21,8 @@ int main(int argc,char **argv){
 
     printf("\n%d",res);
 
+    free(A);
+    
     return 0;
 }
 
@@ -37,18 +39,14 @@ int binarySearch(int *A,int l,int r,int v){
 }
 
 int expSearch(int *A,int n,int v){
-    int exp=1;
+    int i=1;
     
-    while(exp<=n){
-        if(A[exp-1]==v)
-            return exp-1;
-           
-        if(A[exp-1]<v) {
-            exp = exp<<1;
-            printf("%d", exp-1);
-            continue;
-        }
-        
-        return binarySearch(A,(exp>>1)-1,exp-1,v);
+    while(i-1<n){
+        if(A[i-1]==v)
+            return i-1; 
+        if(A[i-1]>v) 
+            break;
+        i<<=1;
     }
+    return binarySearch(A, (i>>1)-1, i-1>n-1 ? n-1 : i-1, v);
 }
