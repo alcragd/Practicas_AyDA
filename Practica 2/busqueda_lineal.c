@@ -77,9 +77,18 @@ int main(int argc,char **argv)
     free(A);
 }
 
+/*
+int linearSearch(int *A,int n,int v)
+Recibe: int * Referencia/Direccion al arreglo A, int tamano del arreglo,
+int valor a buscar en el archivo
+Devuelve: int posicion donde se encuentra el valor en el arreglo
+Observaciones: Funcion que busca un valor en un arreglo por
+metodo de busqueda lineal
+*/
 int linearSearch(int *A,int n,int v){
     for(int i=0;i<n;++i)
         if(A[i]==v)
             return i;
+    // Retornar -1 si no se encontro el valor
     return -1;
 }
