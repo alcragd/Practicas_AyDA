@@ -1,5 +1,5 @@
 /*
-Nombre del programa: busqueda_Lineal.c
+Nombre del programa: busqueda_lineal.c
 Version: 1.0 Noviembre 2025
 Autores: Ramos Mendoza Miguel Angel / Coyol Moreno Angel Zoe / Ramirez Hernandez Christian Isaac
 
@@ -7,8 +7,8 @@ Programa que lee n numeros y los coloca en un arreglo A,
 ejecuta un algoritmo que busca un numero v por metodo de
 busqueda lineal
 
-Compilacion: gcc busqueda_Lineal.c tiempo/tiempo.c -o busqueda_Lineal
-Ejecucion: ./busqueda_Lineal n < numeros10millones.txt
+Compilacion: gcc busqueda_lineal.c tiempo/tiempo.c -o busqueda_lineal
+Ejecucion: ./busqueda_lineal n < numeros10millones.txt
 */
 #include <stdio.h>
 #include <stdlib.h>
