@@ -15,43 +15,21 @@ Ejecucion: ./busqueda_Lineal n < numeros10millones.txt
 
 int linearSearch(int *A,int n,int v);
 
-int main(int argc,char **argv){
+int main(int argc,char **argv)
+{
+    // Recibe por argumento el valor de la variable n (tamaño del arreglo a ordenar)
     if(argc!=2)
         exit(1);
 
-    int n, *A, res, val;
-    n=atoi(argv[1]);
-    A=malloc(n*sizeof(int));
-
-    scanf("%d",&val);
-
-    for(int i=0;i<n;++i)
-        scanf("%d",&A[i]);
-
-    res=linearSearch(A,n,val);
-
-    printf("\n%d",res);
-
-    free(A);
-
-    return 0;
-}
-
-int main(int num_args, char *args[])
-{
-    // Recibe por argumento el valor de la variable n (tamaño del arreglo a ordenar)
-    if (num_args != 2)
-    {
-        exit(1);
-    }
-
     // Variables para el algoritmo
-    int n, i, *A;
+    int n, *A, res, val;
+    
     double utime0, stime0, wtime0, utime1, stime1, wtime1; // Variables para medición de tiempos
     // Asigna a n el segundo argumento del main
-    n = atoi(args[1]);
+    n=atoi(argv[1]);
+    
     // Apartar memoria para n numeros enteros
-    A = malloc(sizeof(int) * n);
+    A=malloc(n*sizeof(int));
 
     if (A == NULL)
     {
@@ -59,27 +37,25 @@ int main(int num_args, char *args[])
         exit(1);
     }
 
+    // Lee el valor a buscar en el archivo
+    scanf("%d",&val);
     // Lee los n valores del archivo 10mil_numeros.txt y los coloca en el arreglo de numeros
-    for (i = 0; i < n; i++)
-    {
-        scanf("%d", &A[i]);
-    }
+    
+    for(int i=0;i<n;++i)
+        scanf("%d",&A[i]);
 
     // Iniciar el conteo del tiempo para las evaluaciones de rendimiento
     uswtime(&utime0, &stime0, &wtime0);
 
     // Llama al algoritmo
-    burbujaSimple(n, A);
+    res=linearSearch(A,n,val);
+
 
     /// Evaluar los tiempos de ejecución
     uswtime(&utime1, &stime1, &wtime1);
 
-    // Impresion del arreglo de numeros ordenados
-
-    // for (i = 0; i < n; i++)
-    // {
-    //     printf("%d ", A[i]);
-    // }
+    // Mostrar la posicion del valor en el arreglo
+    printf("\n%d",res);
 
     // Cálculo del tiempo de ejecución del programa
     printf("\n");
@@ -107,4 +83,3 @@ int linearSearch(int *A,int n,int v){
             return i;
     return -1;
 }
-
