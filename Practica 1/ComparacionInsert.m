@@ -76,11 +76,11 @@ for i = 1:length(grados)
     for j = 1:length(p)
         exp = length(p) - j;
         if exp == 0
-            func_str = [func_str, sprintf('%.3e', p(j))];
+            func_str = [func_str, sprintf('+ %.3e', p(j))];
         elseif exp == 1
-            func_str = [func_str, sprintf(' + %.3e*x', p(j))];
+            func_str = [func_str, sprintf(' + %.3e*x ', p(j))];
         else
-            func_str = [func_str, sprintf(' + %.3e*x^%d', p(j), exp)];
+            func_str = [func_str, sprintf(' + %.3e*x^%d ', p(j), exp)];
         end
     end
     text(0.05, 0.9 - (i-1)*0.05, func_str, 'Units','normalized', 'Color', colors(i), 'FontSize',9);

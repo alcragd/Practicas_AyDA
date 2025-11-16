@@ -1,0 +1,105 @@
+/*
+Nombre del programa: SelectionSort.c
+Version: 1.0 Octubre 2025
+Autores: Ramos Mendoza Miguel Angel / Coyol Moreno Angel Zoe / Ramirez Hernandez Christian Isaac
+
+Programa que lee n numeros y los coloca en un arreglo A,
+ejecuta el algoritmo SelectionSort para ordenarlos de menor a mayor.
+
+Compilacion: gcc SelectionSort.c -o SelectionSort.exe
+Ejecucion: ./SelectionSort.exe n < numeros10millones.txt
+*/
+
+#include <stdlib.h>
+#include <stdio.h>
+#include "tiempo/tiempo.h"
+
+void Seleccion(int *A, int n);
+
+int main(int num_args, char *args[])
+{
+    if (num_args != 2)
+        exit(1);
+
+    double utime0, stime0, wtime0, utime1, stime1, wtime1; // Variables para medición de tiempos
+    int n, i, *A;
+    n = atoi(args[1]);
+    A = malloc(sizeof(int) * n);
+    if (A == NULL)
+    {
+        printf("\n[!]-- Error al asignar memoria");
+        exit(1);
+    }
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &A[i]);
+    }
+
+    // for(i=0;i<n;i++){
+    //     printf("%d\n",A[i]);
+    // }
+
+    // Iniciar el conteo del tiempo para las evaluaciones de rendimiento
+    uswtime(&utime0, &stime0, &wtime0);
+
+    Seleccion(A, n);
+
+    // Evaluar los tiempos de ejecución
+    uswtime(&utime1, &stime1, &wtime1);
+
+    // for (i = 0; i < n; i++)
+    // {
+    //     printf("%d\n", A[i]);
+    // }
+    // Cálculo del tiempo de ejecución del programa
+    printf("\n");
+    printf("real (Tiempo total)  %.10f s\n", wtime1 - wtime0);
+    printf("user (Tiempo de procesamiento en CPU) %.10f s\n", utime1 - utime0);
+    printf("sys (Tiempo en acciónes de E/S)  %.10f s\n", stime1 - stime0);
+    printf("CPU/Wall   %.10f %% \n", 100.0 * (utime1 - utime0 + stime1 - stime0) / (wtime1 - wtime0));
+    printf("\n");
+
+    // Mostrar los tiempos en formato exponecial
+    printf("\n");
+    printf("real (Tiempo total)  %.10e s\n", wtime1 - wtime0);
+    printf("user (Tiempo de procesamiento en CPU) %.10e s\n", utime1 - utime0);
+    printf("sys (Tiempo en acciónes de E/S)  %.10e s\n", stime1 - stime0);
+    printf("CPU/Wall   %.10f %% \n", 100.0 * (utime1 - utime0 + stime1 - stime0) / (wtime1 - wtime0));
+    printf("\n");
+    //******************************************************************
+    free(A);
+}
+
+/**
+ * Funcion: Seleccion
+ * --------------------
+ * Implementación del algoritmo de ordenamiento por Selección (SelectionSort).
+ *
+ * Parámetros:
+ *   A : apuntador al arreglo de enteros a ordenar.
+ *   n : número de elementos en el arreglo.
+ *
+ * Comportamiento:
+ *   - Recorre el arreglo buscando en cada iteración el elemento mínimo
+ *     en el subarreglo no ordenado.
+ *   - Intercambia el elemento mínimo encontrado con el primero del subarreglo.
+ *   - Repite este proceso hasta que el arreglo esté ordenado.
+ *
+ */
+
+void Seleccion(int *A, int n)
+{
+    int i, k, p, temp;
+    for (k = 0; k <= n - 2; k++)
+    {
+        p = k;
+        for (i = k + 1; i <= n - 1; i++)
+        {
+            if (A[i] < A[p])
+                p = i;
+        }
+        temp = A[p];
+        A[p] = A[k];
+        A[k] = temp;
+    }
+}

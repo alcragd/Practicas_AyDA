@@ -76,7 +76,7 @@ for i = 1:length(grados)
     for j = 1:length(p)
         exp = length(p) - j;
         if exp == 0
-            func_str = [func_str, sprintf('%.3e', p(j))];
+            func_str = [func_str, sprintf('+ %.3e', p(j))];
         elseif exp == 1
             func_str = [func_str, sprintf(' + %.3e*x', p(j))];
         else
@@ -112,5 +112,5 @@ xlabel('Tamaño del arreglo');
 ylabel('Tiempo (s)');
 title('Comparación de ajustes para MergeSort: Polinomiales, Logarítmico y n·ln(n)');
 legend('Location', 'northwest');
-set(gca, 'XScale', 'log');
+%set(gca, 'XScale', 'log');
 hold off;
