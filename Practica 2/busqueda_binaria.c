@@ -33,6 +33,6 @@ int binarySearch(int *A,int n,int v){
         if(A[m]==v)
          return m;
         
-        A[m] < v ? (r = m - 1) : (l = m + 1);
+        A[m] > v ? (r = m - 1) : (l = m + 1);
     }
 }
