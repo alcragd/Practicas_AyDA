@@ -11,10 +11,10 @@ int main(int argc,char **argv){
     n=atoi(argv[1]);
     A=malloc(n*sizeof(int));
 
-    scanf("%d",val);
+    scanf("%d",&val);
 
     for(int i=0;i<n;++i)
-        scanf("%d",A[i]);
+        scanf("%d",&A[i]);
 
     res=linearSearch(A,n,val);
 
