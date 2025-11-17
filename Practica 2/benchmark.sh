@@ -29,7 +29,12 @@ for algo in "${ALGORITHMS[@]}"; do
     
     # Para cada tamaño
     for n in "${SIZES[@]}"; do
-        data_file="$OUTPUT_DIR/data_${n}.txt"
+        # Seleccionar archivo según el algoritmo
+        if [[ "$algo" == "busqueda_lineal" || "$algo" == "busqueda_abb" ]]; then
+            data_file="$OUTPUT_DIR/data_unsorted_${n}.txt"
+        else
+            data_file="$OUTPUT_DIR/data_sorted_${n}.txt"
+        fi
         
         if [ ! -f "$data_file" ]; then
             echo "ERROR: Archivo de datos no encontrado: $data_file"
