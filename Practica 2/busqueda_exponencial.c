@@ -56,6 +56,7 @@ int main(int argc,char **argv)
     uswtime(&utime1, &stime1, &wtime1);
 
     printf("\n%d",res);
+    
     printf("\n%.10e",wtime1 - wtime0);
     // Libera la memoria correspondiente al arreglo A
     free(A);

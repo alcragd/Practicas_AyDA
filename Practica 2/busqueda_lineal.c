@@ -56,24 +56,10 @@ int main(int argc,char **argv)
 
     // Mostrar la posicion del valor en el arreglo
     printf("\n%d",res);
+ // Mostrar los tiempos en formato exponecial
+    printf("\n%.10e",wtime1 - wtime0);
 
-    // Cálculo del tiempo de ejecución del programa
-    printf("\n");
-    printf("real (Tiempo total)  %.10f s\n", wtime1 - wtime0);
-    printf("user (Tiempo de procesamiento en CPU) %.10f s\n", utime1 - utime0);
-    printf("sys (Tiempo en acciónes de E/S)  %.10f s\n", stime1 - stime0);
-    printf("CPU/Wall   %.10f %% \n", 100.0 * (utime1 - utime0 + stime1 - stime0) / (wtime1 - wtime0));
-    printf("\n");
-
-    // Mostrar los tiempos en formato exponecial
-    printf("\n");
-    printf("real (Tiempo total)  %.10e s\n", wtime1 - wtime0);
-    printf("user (Tiempo de procesamiento en CPU) %.10e s\n", utime1 - utime0);
-    printf("sys (Tiempo en acciónes de E/S)  %.10e s\n", stime1 - stime0);
-    printf("CPU/Wall   %.10f %% \n", 100.0 * (utime1 - utime0 + stime1 - stime0) / (wtime1 - wtime0));
-    printf("\n");
-    //******************************************************************
-    // Libera la memoria correspondiente al arreglo A
+    //Libera la memoria correspondiente al arreglo A*/
     free(A);
 }
 

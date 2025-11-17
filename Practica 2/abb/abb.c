@@ -115,7 +115,19 @@ void Destroy_ABB(abb *A)
     *A = NULL;
 }
 
+/*
+booleano abbSearch(abb *A, int v)
+Recibe:   abb *A   -> puntero al ABB (raíz)
+                    int v    -> valor a buscar
+Devuelve: booleano  -> TRUE si el valor existe en el árbol, FALSE en caso contrario
 
+Observaciones:
+- La función recorre recursivamente el árbol comparando 'v' con el campo num
+    del nodo actual. Si el nodo es NULL devuelve FALSE (no encontrado).
+- Si el valor es igual al del nodo devuelve TRUE.
+- Si el valor es menor, busca en el subárbol izquierdo; si es mayor, en el derecho.
+- No modifica la estructura del árbol.
+*/
 booleano abbSearch(abb *A,int v){
     if(*A==NULL)
         return FALSE;
@@ -126,3 +138,4 @@ booleano abbSearch(abb *A,int v){
     if((*A)->num<v)
         return abbSearch(&((*A)->right),v);
 }
+
