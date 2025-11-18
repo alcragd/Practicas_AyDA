@@ -12,6 +12,7 @@ Ejecucion: ./busqueda_lineal n < numeros10millones.txt
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include "tiempo/tiempo.h"
 
 int linearSearch(int *A,int n,int v);
 

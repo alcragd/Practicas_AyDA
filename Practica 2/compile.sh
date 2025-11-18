@@ -1,18 +1,19 @@
 #!/bin/bash
-# compile.sh
-# Compila todos los algoritmos de búsqueda
+# Compila los ejecutables en bin/
+set -euo pipefail
 
-echo "Compilando algoritmos de búsqueda..."
+CFLAGS="-O2"
+BIN_DIR="bin"
+mkdir -p "$BIN_DIR"
 
-# Compilar con la librería de tiempo
-gcc -O2 -o busqueda_lineal busqueda_lineal.c tiempo/tiempo.c
-gcc -O2 -o busqueda_binaria busqueda_binaria.c tiempo/tiempo.c
-gcc -O2 -o busqueda_exponencial busqueda_exponencial.c tiempo/tiempo.c
-gcc -O2 -o busqueda_fibonacci busqueda_fibonacci.c tiempo/tiempo.c
+echo "Compilando (salida en $BIN_DIR/)..."
 
-# Compilar ABB (árbol binario de búsqueda)
-gcc -O2 -o busqueda_abb busqueda_abb.c abb/abb.c tiempo/tiempo.c
+# Ajusta los archivos fuente si la estructura de carpetas difiere
+gcc $CFLAGS -o "$BIN_DIR/busqueda_lineal" busqueda_lineal.c tiempo/tiempo.c
+gcc $CFLAGS -o "$BIN_DIR/busqueda_binaria" busqueda_binaria.c tiempo/tiempo.c
+gcc $CFLAGS -o "$BIN_DIR/busqueda_exponencial" busqueda_exponencial.c tiempo/tiempo.c
+gcc $CFLAGS -o "$BIN_DIR/busqueda_fibonacci" busqueda_fibonacci.c tiempo/tiempo.c
+gcc $CFLAGS -o "$BIN_DIR/busqueda_abb" busqueda_abb.c abb/abb.c tiempo/tiempo.c
 
-echo "✓ Compilación completada"
-echo "Ejecutables generados:"
-ls -lh busqueda_* | awk '{print $9, "(" $5 ")"}'
+echo "✓ Compilación completada. Ejecutables:"
+ls -lh "$BIN_DIR"/busqueda_* 2>/dev/null || true
