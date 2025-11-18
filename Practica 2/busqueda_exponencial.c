@@ -81,7 +81,7 @@ int expSearch(int *A,int n,int v){
         i<<=1;
     }
     // Buscar por busqueda binaria en un rango
-    return binarySearch(A, (i>>1)-1, i-1>n-1 ? n-1 : i-1, v);
+    return binarySearch(A, i>>1, i-2>n-1 ? n-1 : i-2, v);
 }
 
 /*

@@ -83,7 +83,7 @@ int fiboSearch(int *A,int n,int v){
         c = a+b;
     }
     // Buscar por busqueda binaria en un rango
-    return binarySearch(A, b-1, c-1>n-1 ? n-1 : c-1, v);
+    return binarySearch(A, b, c-2>n-1 ? n-1 : c-1, v);
 }
 
 /*
