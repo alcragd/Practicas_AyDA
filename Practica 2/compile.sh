@@ -11,6 +11,7 @@ echo "Compilando (salida en $BIN_DIR/)..."
 # Ajusta los archivos fuente si la estructura de carpetas difiere
 gcc $CFLAGS -o "$BIN_DIR/busqueda_lineal" busqueda_lineal.c tiempo/tiempo.c
 gcc $CFLAGS -o "$BIN_DIR/busqueda_binaria" busqueda_binaria.c tiempo/tiempo.c
+# gcc $CFLAGS -o "$BIN_DIR/busqueda_binaria_t" threads/busqueda_binaria.c tiempo/tiempo.c
 gcc $CFLAGS -o "$BIN_DIR/busqueda_exponencial" busqueda_exponencial.c tiempo/tiempo.c
 gcc $CFLAGS -o "$BIN_DIR/busqueda_fibonacci" busqueda_fibonacci.c tiempo/tiempo.c
 gcc $CFLAGS -o "$BIN_DIR/busqueda_abb" busqueda_abb.c abb/abb.c tiempo/tiempo.c
