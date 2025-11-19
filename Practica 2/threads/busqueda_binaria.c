@@ -170,7 +170,6 @@ void binarySearch(int *A,int n,int v){
                 for (int j = 0; j < i; ++j) pthread_join(threads[j], NULL);
                 free(threads);
                 free(pargs);
-                goto sequential_fallback;
             }
         }
 
@@ -224,22 +223,7 @@ void binarySearch(int *A,int n,int v){
         free(pargs);
         free(pivots);
         free(cmps);
-        continue;
-
-sequential_fallback:
-        // fallback secuencial simple si falla la creación de hilos
-        for (int i = l; i <= r && !atomic_load(&flag); ++i) {
-            if (A[i] == v) {
-                pthread_mutex_lock(&mutex);
-                if (!atomic_load(&flag)) {
-                    res = i;
-                    atomic_store(&flag, 1);
-                }
-                pthread_mutex_unlock(&mutex);
-                break;
-            }
-        }
-        break;
+        
     }
 
     pthread_mutex_destroy(&mutex);
