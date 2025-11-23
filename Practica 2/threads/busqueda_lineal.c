@@ -37,7 +37,7 @@ typedef struct datos DATOS;
 int main(int argc,char **argv)
 {
     // Recibe por argumento el valor de la variable n (tamaño del arreglo a ordenar)
-    if(argc!=3)
+    if(argc!=2)
         exit(1);
 
     // Variables para el algoritmo
@@ -46,7 +46,8 @@ int main(int argc,char **argv)
 
     // Asigna a n el segundo argumento del main
     n=atoi(argv[1]);
-    h=atoi(argv[2]);
+    // h=atoi(argv[2]);
+    h=4;
 
     pthread_mutex_init(&mutex, NULL);
     pthread_t *hilos = malloc(sizeof(pthread_t) * h);

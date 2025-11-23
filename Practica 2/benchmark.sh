@@ -7,9 +7,10 @@ RESULTS_DIR="benchmark_results"
 BIN_DIR="bin"
 mkdir -p "$RESULTS_DIR"
 
-ALGORITHMS=(busqueda_lineal busqueda_binaria busqueda_exponencial busqueda_fibonacci busqueda_abb)
+ALGORITHMS=(busqueda_abb_t) # busqueda_lineal_t busqueda_binaria_t busqueda_exponencial_t busqueda_fibonacci_t 
 # ALGORITHMS=(busqueda_binaria busqueda_binaria_t)
 SIZES=(1000000 2000000 3000000 4000000 5000000 6000000 7000000 8000000 9000000 10000000)
+
 
 SEARCH_FILE="$OUTPUT_DIR/search_values.txt"
 if [ ! -f "$SEARCH_FILE" ]; then
@@ -44,7 +45,7 @@ for algo in "${ALGORITHMS[@]}"; do
   : > "$out"
 
   for n in "${SIZES[@]}"; do
-    if [[ "$algo" == "busqueda_lineal" || "$algo" == "busqueda_abb" ]]; then
+    if [[ "$algo" == "busqueda_lineal" || "$algo" == "busqueda_abb" || "$algo" == "busqueda_lineal_t" || "$algo" == "busqueda_abb_t" ]]; then
       data="$OUTPUT_DIR/data_unsorted_${n}.txt"
     else
       data="$OUTPUT_DIR/data_sorted_${n}.txt"

@@ -156,7 +156,7 @@ finish:
     uswtime(&utime1, &stime1, &wtime1);
 
     printf("\n%d", res);
-    printf("\n%.10f", wtime1 - wtime0);
+    printf("\n%.10e",wtime1 - wtime0);
 
     free(A);
     free(hilos);

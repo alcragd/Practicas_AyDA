@@ -4,8 +4,13 @@ set -euo pipefail
 
 RESULTS_DIR="benchmark_results"
 OUTCSV="benchmark_results.csv"
-ALGORITHMS=(busqueda_lineal busqueda_binaria busqueda_exponencial busqueda_fibonacci busqueda_abb)
+# ALGORITHMS=(busqueda_lineal busqueda_binaria busqueda_exponencial busqueda_fibonacci busqueda_abb)
+ALGORITHMS=(busqueda_lineal busqueda_lineal_t busqueda_binaria busqueda_binaria_t busqueda_exponencial busqueda_exponencial_t busqueda_fibonacci busqueda_fibonacci_t busqueda_abb_t busqueda_abb)
+
+
 SIZES=(1000000 2000000 3000000 4000000 5000000 6000000 7000000 8000000 9000000 10000000)
+
+
 
 if [ ! -d "$RESULTS_DIR" ]; then
   echo "ERROR: $RESULTS_DIR no existe. Ejecuta benchmark.sh"
@@ -29,7 +34,8 @@ for n in "${SIZES[@]}"; do
     else
       val="N/A"
     fi
-    line="$line,$val"
+    # envolver cada valor entre comillas dobles para generar CSV válido
+    line="$line,\"$val\""
   done
   echo "$line" >> "$OUTCSV"
 done

@@ -24,8 +24,8 @@ Salida:
 #include <stdlib.h>
 #include <pthread.h>
 #include <stdatomic.h>
-#include "abb/abb.h"
-#include "tiempo/tiempo.h"
+#include "../abb/abb.h"
+#include "../tiempo/tiempo.h"
 
 /* Estructura para pasar argumentos a los hilos de búsqueda */
 typedef struct {
@@ -42,16 +42,17 @@ pthread_mutex_t result_mutex;
 void *abbSearchThread(void *arg);
 
 int main(int argc, char **argv) {
-    /* Verificar argumentos: se esperan n (tamaño) y h (número de árboles/hilos) */
-    if (argc != 3) {
-        fprintf(stderr, "Uso: %s n h\n", argv[0]);
+
+    if (argc != 2) {
+        fprintf(stderr, "Uso: %s n \n", argv[0]);
         fprintf(stderr, "  n: número total de elementos\n");
-        fprintf(stderr, "  h: número de árboles y hilos paralelos\n");
+    
         exit(1);
     }
 
     int n = atoi(argv[1]);
-    int h = atoi(argv[2]);
+    // int h = atoi(argv[2]);
+    int h = 4;
     int val;
     int res;
     double utime0, stime0, wtime0, utime1, stime1, wtime1;

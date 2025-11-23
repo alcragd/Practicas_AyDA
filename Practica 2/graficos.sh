@@ -7,7 +7,9 @@ RESULTS_DIR="benchmark_results"
 OUTDIR="graphs"
 mkdir -p "$OUTDIR"
 
-ALGORITHMS=(busqueda_lineal busqueda_binaria busqueda_exponencial busqueda_fibonacci busqueda_abb)
+ALGORITHMS=(busqueda_lineal busqueda_lineal_t busqueda_binaria busqueda_binaria_t busqueda_exponencial busqueda_exponencial_t busqueda_fibonacci busqueda_fibonacci_t busqueda_abb_t busqueda_abb)
+
+# ALGORITHMS=(busqueda_lineal busqueda_binaria busqueda_exponencial busqueda_fibonacci busqueda_abb)
 TICS="1000000,2000000,3000000,4000000,5000000,6000000,7000000,8000000,9000000,10000000"
 
 # comparativo
