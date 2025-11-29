@@ -186,7 +186,7 @@ void *binarySearchThread(void *arg) {
             return NULL;
         }
         
-        m = (r + l) / 2;
+        m = l+(r-l)/2;
         
         if(d->A[m] == d->val) {
             pthread_mutex_lock(&mutex);

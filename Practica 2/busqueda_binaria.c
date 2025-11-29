@@ -74,7 +74,7 @@ int binarySearch(int *A,int n,int v){
     l=0; r=n-1;
 
     while(l<=r){
-        m=(r+l)/2;
+        m=l+(r-l)/2;
         if(A[m]==v)
          return m;
         

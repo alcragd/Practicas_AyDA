@@ -116,7 +116,7 @@ void *binarySearchThread(void *arg) {
             return NULL;
         }
         
-        m = (r + l) / 2;
+        m = l+(r-l)/2;
         
         if(d->A[m] == d->val) {
             // Usar mutex para evitar race condition en la asignación de res

@@ -98,7 +98,7 @@ metodo de busqueda binaria
 int binarySearch(int *A,int l,int r,int v){
     int m;
     while(l<=r){
-        m=(r+l)/2;
+        m=l+(r-l)/2;
         if(A[m]==v)
          return m;
         

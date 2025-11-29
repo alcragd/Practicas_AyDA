@@ -123,7 +123,7 @@ int main(int argc, char **argv)
         int m;
         
         while(l <= r) {
-            m = (r + l) / 2;
+            m = l+(r-l)/2;
             
             if(A[m] == val) {
                 res = m;
