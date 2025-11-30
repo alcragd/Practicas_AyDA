@@ -107,7 +107,7 @@ void *pivot_check(void *arg) {
 
 void binarySearch(int *A,int n,int v){
 
-    int t = 4; // numero de pivotes/hilos por ronda (puedes ajustar)
+    int t = 4; // numero de pivotes/hilos por ronda
     if (n <= 0) return;
 
     if (t > n) t = n;
