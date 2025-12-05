@@ -1,15 +1,14 @@
-
 /*
 ================================================================================
-tadarbolbin.c
-Versión: 1.0
+bintree.c
+Versión: 2.0
 Fecha: Junio 2025
-Autor: Edgardo Adrián Franco Martínez - Mayo 2021
+Autor: Edgardo Adrián Franco Martínez - Mayo 2021, Coyol Moreno Angel Zoe - Diciembre 2025
 Documentación: Coyol Moreno Angel Zoe
 
 Descripción:
 ------------
-Este archivo contiene la implementación del TAD Árbol Binario (tadarbolbin.h).
+Este archivo contiene la implementación del TAD Árbol Binario (bintree.h).
 Un árbol binario es una estructura de datos dinámica en la que cada nodo tiene
 a lo sumo dos hijos, denominados hijo izquierdo e hijo derecho.
 
@@ -23,13 +22,13 @@ Observaciones:
 
 Compilación:
 ------------
-gcc TADArbol_bin.c -c
+gcc bintree.c -c
 
 ================================================================================
 */
 
 // LIBRERÍAS
-#include "TADArbol_bin.h"
+#include "bintree.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -432,4 +431,81 @@ elemento ReadNode(arbol_binario *a, posicion p)
 		printf("ERROR (ReadNode):La posición dada no es valida");
 		exit(1);
 	}
+}
+
+/*
+void AttachLeftSubtree(arbol_binario *a, posicion p, arbol_binario sub)
+
+Descripción: Adjunta el subárbol 'sub' como hijo izquierdo del nodo p.
+Si el árbol está vacío, 'sub' se convierte en la raíz.
+Nota: Transfiere la propiedad del subárbol (no copia nodos).
+*/
+void AttachLeftSubtree(arbol_binario *a, posicion p, arbol_binario sub)
+{
+    if (sub == NULL) return; /* nada que adjuntar */
+
+    if (Empty(&(*a)))
+    {
+        /* árbol vacío: sub se convierte en raíz */
+        *a = sub;
+        return;
+    }
+
+    if (!NullNode(&(*a), p))
+    {
+        if (p->izq != NULL)
+        {
+            printf("ERROR (AttachLeftSubtree): p ya tiene hijo izquierdo\n");
+            exit(1);
+        }
+        /* evitar adjuntar si sub pertenece ya al mismo árbol */
+        if (!NullNode(&(*a), sub))
+        {
+            printf("ERROR (AttachLeftSubtree): subárbol pertenece ya al árbol destino\n");
+            exit(1);
+        }
+        p->izq = sub;
+    }
+    else
+    {
+        printf("ERROR (AttachLeftSubtree):La posición dada no es valida\n");
+        exit(1);
+    }
+}
+
+/*
+void AttachRightSubtree(arbol_binario *a, posicion p, arbol_binario sub)
+
+Descripción: Adjunta el subárbol 'sub' como hijo derecho del nodo p.
+Si el árbol está vacío, 'sub' se convierte en la raíz.
+*/
+void AttachRightSubtree(arbol_binario *a, posicion p, arbol_binario sub)
+{
+    if (sub == NULL) return;
+
+    if (Empty(&(*a)))
+    {
+        *a = sub;
+        return;
+    }
+
+    if (!NullNode(&(*a), p))
+    {
+        if (p->der != NULL)
+        {
+            printf("ERROR (AttachRightSubtree): p ya tiene hijo derecho\n");
+            exit(1);
+        }
+        if (!NullNode(&(*a), sub))
+        {
+            printf("ERROR (AttachRightSubtree): subárbol pertenece ya al árbol destino\n");
+            exit(1);
+        }
+        p->der = sub;
+    }
+    else
+    {
+        printf("ERROR (AttachRightSubtree):La posición dada no es valida\n");
+        exit(1);
+    }
 }

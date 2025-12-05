@@ -35,8 +35,7 @@ Puede ser modificada según las necesidades del usuario.
 typedef struct elemento
 {
 	byte b;
-	int cont;
-	// Puede agregar más campos si lo desea
+	int frec;
 } elemento;
 
 /*
@@ -171,3 +170,19 @@ Recibe: arbol_binario *a (Referencia al árbol), posicion p (nodo a modificar), 
 Devuelve: Nada
 */
 void ReplaceNode(arbol_binario *a, posicion p, elemento e);
+
+/*
+void AttachLeftSubtree(arbol_binario *a, posicion p, arbol_binario sub)
+
+Descripción: Adjunta el subárbol 'sub' como hijo izquierdo del nodo p.
+Si el árbol está vacío, 'sub' se convierte en la raíz.
+Nota: Transfiere la propiedad del subárbol (no copia nodos).
+*/
+void AttachLeftSubtree(arbol_binario *a, posicion p, arbol_binario sub);
+/*
+void AttachRightSubtree(arbol_binario *a, posicion p, arbol_binario sub)
+
+Descripción: Adjunta el subárbol 'sub' como hijo derecho del nodo p.
+Si el árbol está vacío, 'sub' se convierte en la raíz.
+*/
+void AttachRightSubtree(arbol_binario *a, posicion p, arbol_binario sub);
