@@ -1,5 +1,48 @@
+/*================================================================================
+huffman.c
+Versión: 1.2
+Fecha: Junio 2025
+Autores: Coyol Moreno Angel Zoe
+         Ramirez Hernandez Christian Isaac
+         Ramos Mendoza Miguel Angel
+Documentación: Coyol Moreno Angel Zoe
+
+Descripción:
+------------
+Implementación de utilidades para construir el árbol de Huffman a partir de un
+conteo de frecuencias y para generar la tabla de códigos binarios por símbolo.
+
+Funciones principales:
+- buildHuffmanTree : construye el árbol de Huffman combinando nodos de menor frecuencia.
+- getHuffmanCod    : recorre el árbol y devuelve los códigos binarios para cada hoja.
+- huffmanCodRec    : función recursiva que arma los códigos.
+- cmpFreq          : comparador para ordenar árboles por frecuencia.
+
+Observaciones:
+--------------
+- Se usa el TAD arbol_binario (bintree.h). Los nodos de hojas contienen el
+  símbolo original en elemento.b y su frecuencia en elemento.frec.
+- Las estructuras auxiliares usadas durante la construcción se liberan, el
+  árbol final se devuelve en *tree.
+- Las cadenas de código devueltas por getHuffmanCod están alocadas dinámicamente;
+  el llamador debe liberarlas.
+================================================================================*/
+
 #include "huffman.h"
 
+/*
+buildHuffmanTree
+
+Construye el árbol de Huffman a partir del arreglo de frecuencias.
+Algoritmo:
+ - Crea una lista de árboles (cada árbol es una hoja con la frecuencia del símbolo).
+ - Ordena la lista por frecuencia.
+ - Repite: toma los dos árboles de menor frecuencia, crea un nuevo padre cuya
+   frecuencia es la suma, y adjunta los dos como hijos izquierdo/derecho.
+ - Continúa hasta obtener un único árbol.
+
+Retorna el número de hojas (símbolos distintos).
+*/
 int buildHuffmanTree(arbol_binario *tree, int frec[256])
 {
     int bytesExistentes = 0;
@@ -18,7 +61,7 @@ int buildHuffmanTree(arbol_binario *tree, int frec[256])
 
         Initialize(list[j]);
         elemento e = {(byte)i, frec[i]};
-        NewRightSon(list[j], NULL, e);   
+        NewRightSon(list[j], NULL, e);   /* crea una raíz-hoja con el símbolo */
         ++j;
     }
 
@@ -59,6 +102,13 @@ int buildHuffmanTree(arbol_binario *tree, int frec[256])
     return r;
 }
 
+/*
+getHuffmanCod
+
+Genera la tabla de códigos binarios recorriendo el árbol de Huffman.
+Reserva un arreglo de byteCode con num_elem posiciones y usa huffmanCodRec
+para llenar el arreglo.
+*/
 byteCode* getHuffmanCod(arbol_binario *tree,int num_elem){
     byteCode *r = malloc(num_elem * sizeof(byteCode));
     if (!r) return NULL;
@@ -69,7 +119,23 @@ byteCode* getHuffmanCod(arbol_binario *tree,int num_elem){
     return r;
 }
 
+/*
+huffmanCodRec
 
+Recorrido recursivo en preorden que construye los códigos:
+ - Si el nodo es hoja: copia el contenido de buf (hasta depth) en una nueva cadena
+   y la asigna a arr[*i].codigo junto con el byte arr[*i].b.
+ - Si no es hoja: escribe '0' en buf[depth] y desciende a la izquierda; escribe
+   '1' en buf[depth] y desciende a la derecha.
+
+Parámetros:
+ - t, p : árbol y posición actual.
+ - arr  : arreglo de salida.
+ - i    : índice actual en arr (puntero, se incrementa al añadir una hoja).
+ - buf  : buffer temporal para construir el código.
+ - depth: nivel actual (posición en buf).
+ - n    : tamaño máximo de arr (seguridad).
+*/
 void huffmanCodRec(arbol_binario* t, posicion p, byteCode *arr, int *i, char *buf, int depth, int n){
     if (p == NULL || NullNode(t, p) || *i >= n)
         return;
@@ -101,6 +167,12 @@ void huffmanCodRec(arbol_binario* t, posicion p, byteCode *arr, int *i, char *bu
     buf[depth] = '\0';
 }
 
+/*
+cmpFreq
+
+Comparador usado por qsort. Recupera la frecuencia almacenada en la raíz de
+cada arbol_binario y las compara para ordenar de menor a mayor.
+*/
 int cmpFreq(const void *a, const void *b)
 {
     arbol_binario *A = *(arbol_binario **)a;

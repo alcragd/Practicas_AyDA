@@ -1,10 +1,42 @@
+/*
+================================================================================
+main.c
+Versión: 1.1
+Fecha: Diciembre 2025
+Autores: Coyol Moreno Angel Zoe
+         Ramirez Hernandez Christian Isaac
+         Ramos Mendoza Miguel Angel
+
+Descripción:
+------------
+Programa principal para la práctica de compresión Huffman.
+- Lee un archivo de entrada (ruta pasada como argumento).
+- Construye el árbol de Huffman a partir de frecuencias leídas del archivo.
+- Genera códigos Huffman por byte.
+- Comprime el contenido y escribe el resultado en un archivo de salida.
+
+Uso:
+----
+./programa archivo.ext
+
+Observaciones:
+--------------
+- depende de los módulos:
+    lib/huffman/huffman.h   (con buildHuffmanTree, getHuffmanCod, etc.)
+    lib/file/compresor.h    (con readF, compress, etc.)
+
+- Este archivo contiene funciones auxiliares para imprimir el árbol.
+================================================================================
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
-#include<string.h>
+#include <string.h>
 #include "lib/huffman/huffman.h"
 #include "lib/file/compresor.h"
 
 
+/* Prototipos de funciones auxiliares para impresión del árbol */
 void PrintLeaves(arbol_binario *t, posicion p);
 void PrintTreeVisual(arbol_binario *t, posicion p, int depth);
 void PrintTree(arbol_binario *t);
@@ -14,38 +46,54 @@ int main(int argc, char** argv){
         printf("Error al leer datos");
         return 1; 
     }
-    char* name;
-    
-    sscanf(argv[1],"%[^.]",name);
 
-    char* Codigos[256]={0};
-    
+    /* buffers para separar nombre y extensión del archivo */
+    char name[512] = {0};
+    char ext[64] = {0};
+    char outname[600];
+
+    /* parsea nombre.ext -> name, ext (evita overflow) */
+    int n = sscanf(argv[1], "%511[^.].%63s", name, ext);
+
+    /* arreglo de punteros a códigos por byte (inicializados a NULL) */
+    char* Codigos[256] = {0};
+
+    /* lectura del archivo: retorna frecuencias, bytes y tamaño */
     readFile rf = readF(argv[1]);
     printf("El archivo se leyo correctamente \n");
 
     arbol_binario tree;
 
-    int bytesExistentes=buildHuffmanTree(&tree,rf.frecuencias);
-    byteCode *bc=getHuffmanCod(&tree,bytesExistentes);
-  
-    for(int i=0;i<bytesExistentes;++i){
-        //printf("%c: %s\n",bc[i].b,bc[i].codigo);
-        Codigos[bc[i].b]=bc[i].codigo;
-    }
-    // for(int i=0;i<256;++i)
-    //     printf("%d: %s\n",i,Codigos[i]);
+    /* construye árbol de Huffman y obtiene cantidad de bytes presentes */
+    int bytesExistentes = buildHuffmanTree(&tree, rf.frecuencias);
 
+    /* obtiene los códigos Huffman (array de byteCode) */
+    byteCode *bc = getHuffmanCod(&tree, bytesExistentes);
 
-    strcat(name,"_compressed.dat");
-    compress(rf.bytes,rf.num_elements,Codigos,name);
+    /* llena la tabla de códigos indexada por el valor del byte */
+    for(int i = 0; i < bytesExistentes; ++i)
+        Codigos[(unsigned char)bc[i].b] = bc[i].codigo;
 
-    //PrintTree(&tree);
+    /* nombre de salida: <nombre>_compressed.dat */
+    snprintf(outname, sizeof(outname), "%s_compressed.dat", name);
+
+    /* realiza la compresión y escribe el archivo de salida */
+    compress(rf.bytes, rf.num_elements, Codigos, outname);
 
     return 0;
 }
 
 
+/*
+PrintLeaves
 
+Descripción:
+    Recorre el árbol y imprime solo las hojas (byte y frecuencia).
+
+Parámetros:
+    t - árbol binario.
+    p - posición desde la cual iniciar el recorrido (usualmente Root).
+*/
 void PrintLeaves(arbol_binario *t, posicion p)
 {
     if (p == NULL || NullNode(t, p))
@@ -54,11 +102,11 @@ void PrintLeaves(arbol_binario *t, posicion p)
     posicion l = LeftSon(t, p);
     posicion r = RightSon(t, p);
 
-    // Si ambos hijos son nulos/invalidos -> es hoja
+    /* Si ambos hijos son nulos/invalidos -> es hoja */
     if ((l == NULL || NullNode(t, l)) && (r == NULL || NullNode(t, r))) {
         elemento e = ReadNode(t, p);
-        // imprime byte y frecuencia (formato ajustable)
-        printf("%c: 0x%02X: %d\n", e.b,e.b, e.frec);
+        /* imprime byte y frecuencia (formato ajustable) */
+        printf("%c: 0x%02X: %d\n", e.b, (unsigned char)e.b, e.frec);
         return;
     }
 
@@ -66,9 +114,18 @@ void PrintLeaves(arbol_binario *t, posicion p)
     PrintLeaves(t, r);
 }
 
-/* Imprime el árbol visualmente rotado 90° hacia la izquierda.
-   - RightSon aparece arriba, Root en el centro, LeftSon abajo.
-   - depth controla la indentación (llamar con 0).
+/*
+PrintTreeVisual
+
+Descripción:
+    Imprime el árbol visualmente rotado 90° hacia la izquierda.
+    RightSon aparece arriba, Root en el centro, LeftSon abajo.
+    depth controla la indentación (llamar con 0).
+
+Parámetros:
+    t     - árbol binario.
+    p     - posición actual (usualmente Root).
+    depth - nivel de indentación (usar 0 al llamar).
 */
 void PrintTreeVisual(arbol_binario *t, posicion p, int depth)
 {
@@ -88,7 +145,7 @@ void PrintTreeVisual(arbol_binario *t, posicion p, int depth)
         (RightSon(t, p) == NULL || NullNode(t, RightSon(t, p))))
     {
         /* hoja */
-        printf("%c (0x%02X): %d\n",e.b,(unsigned char)e.b, e.frec);
+        printf("%c (0x%02X): %d\n", e.b, (unsigned char)e.b, e.frec);
     }
     else
     {
@@ -100,7 +157,15 @@ void PrintTreeVisual(arbol_binario *t, posicion p, int depth)
     PrintTreeVisual(t, LeftSon(t, p), depth + 1);
 }
 
-/* Wrapper conveniente */
+/*
+PrintTree
+
+Descripción:
+    Imprime el árbol completo a partir de la raíz.
+
+Parámetros:
+    - arbol_binario t: referencia al arbol a imprimir
+*/
 void PrintTree(arbol_binario *t)
 {
     PrintTreeVisual(t, Root(t), 0);
