@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include<string.h>
 #include "lib/huffman/huffman.h"
-#include "lib/file/readFile.h"
 #include "lib/file/compresor.h"
 
 
@@ -10,35 +10,36 @@ void PrintTreeVisual(arbol_binario *t, posicion p, int depth);
 void PrintTree(arbol_binario *t);
 
 int main(int argc, char** argv){
-
     if(argc != 2){
         printf("Error al leer datos");
         return 1; 
     }
-    char* name=argv[1];
+    char* name;
+    
+    sscanf(argv[1],"%[^.]",name);
+
     char* Codigos[256]={0};
     
-    readFile rf = readF(name);
+    readFile rf = readF(argv[1]);
     printf("El archivo se leyo correctamente \n");
 
     arbol_binario tree;
 
-  
-   int bytesExistentes=buildHuffmanTree(&tree,rf.frecuencias);
+    int bytesExistentes=buildHuffmanTree(&tree,rf.frecuencias);
     byteCode *bc=getHuffmanCod(&tree,bytesExistentes);
   
-
-
     for(int i=0;i<bytesExistentes;++i){
         //printf("%c: %s\n",bc[i].b,bc[i].codigo);
         Codigos[bc[i].b]=bc[i].codigo;
-        }
+    }
     // for(int i=0;i<256;++i)
     //     printf("%d: %s\n",i,Codigos[i]);
-    
-    compress(rf.bytes,rf.num_elements,Codigos);
 
-    PrintTree(&tree);
+
+    strcat(name,"_compressed.dat");
+    compress(rf.bytes,rf.num_elements,Codigos,name);
+
+    //PrintTree(&tree);
 
     return 0;
 }

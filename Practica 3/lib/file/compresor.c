@@ -1,5 +1,6 @@
 #include "compresor.h"
-void compress(unsigned char *bytes, long long num_elements,  char *codigo[256]){
+
+void compress(unsigned char *bytes, long long num_elements,  char *codigo[256], char* fileName){
 
     long long size=0;
     for(long long i = 0; i < num_elements; i++){
@@ -36,7 +37,7 @@ void compress(unsigned char *bytes, long long num_elements,  char *codigo[256]){
     if(count_bit>0)
         compress[size++] = tmp_byte;
 
-    FILE * file = fopen("prueba.dat", "wb");
+    FILE * file = fopen(fileName, "wb");
     if(file == NULL){
         printf("Error al crear el archivo");
         exit(1); 
@@ -51,5 +52,36 @@ void compress(unsigned char *bytes, long long num_elements,  char *codigo[256]){
 
     fflush(file);
     fclose(file);
+}
+
+readFile readF(char *name){
+    FILE * file = fopen(name, "rb");
+    if(file == NULL){
+        printf("Error al abrir el archivo");
+        fclose(file);
+        exit(1);
+    }
+
+    readFile rf = {0};
+
+    fseek(file, 0, SEEK_END);
+    rf.num_elements = ftell(file);
+    rewind(file);
+
+    rf.bytes = malloc(sizeof(unsigned char) * rf.num_elements);
+    if(rf.bytes == NULL){
+        printf("Error al reservar memoria");
+        exit(1);
+    }
+
+    fread(rf.bytes, sizeof(char), rf.num_elements, file);
+
+    fclose(file);
+
+    for(int i = 0; i < rf.num_elements; i++){
+        rf.frecuencias[rf.bytes[i]]++;
+    }
+    
+    return rf;
 }
 

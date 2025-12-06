@@ -81,7 +81,7 @@ void huffmanCodRec(arbol_binario* t, posicion p, byteCode *arr, int *i, char *bu
     if ((l == NULL || NullNode(t, l)) && (r == NULL || NullNode(t, r))) {
         elemento e = ReadNode(t, p);
         buf[depth] = '\0';
-        size_t len = (size_t)depth + 1;
+        int len = depth + 1;
         char *code = malloc(len);
         memcpy(code, buf, depth);
         code[depth] = '\0';

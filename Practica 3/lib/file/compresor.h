@@ -1,11 +1,16 @@
-#ifndef COMPRESOR_H
-#define COMPRESOR_H
-
+#ifndef COMPRESSOR_H
+#define COMPRESSOR_H
 #include <stdio.h>
 #include <stdlib.h>
-#include "../huffman/huffman.h"
 
+typedef struct 
+{
+    unsigned char *bytes;
+    int frecuencias[256];
+    long long num_elements;
+}readFile;
 
-void compress(unsigned char *byte, long long num_elements,  char *codigo[256], char* );
+readFile readF(char *name);
+void compress(unsigned char *byte, long long num_elements,  char *codigo[256], char* fileName);
 
-#endif
+#endif //COMPRESSOR_H
