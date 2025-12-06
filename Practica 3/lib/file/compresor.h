@@ -13,4 +13,4 @@ typedef struct
 readFile readF(char *name);
 void compress(unsigned char *byte, long long num_elements,  char *codigo[256], char* fileName);
 
-#endif //COMPRESSOR_H
+#endif /*COMPRESSOR_H*/
