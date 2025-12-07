@@ -52,8 +52,13 @@ int main(int argc, char** argv){
     /* buffers para separar nombre y extensión del archivo */
     char name[512] = {0};
     char ext[64] = {0};
+
     
     sscanf(argv[1], "%511[^.].%63s", name, ext);
+
+    
+    // printf("%s\n",name);
+    // printf("%s\n",ext);
 
     file_compress(name,ext);
    

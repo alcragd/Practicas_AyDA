@@ -187,19 +187,22 @@ int cmpFreq(const void *a, const void *b)
 
 int getCoddedTree(arbol_binario *huff_tree, byte** out){
   char buff[1024];  
-  int i = 0,size;
+  int i = 0,size_bits,size_bytes;
   
   getCoddedTree_dfs(huff_tree, Root(huff_tree), buff, &i);
   buff[i] = '\0';  
 
-  size = getPackedSize(buff,i);
-  
+  //printf("%s",buff);
+
+  size_bits = getPackedSize(buff,i);
+  size_bytes = (size_bits+7)/8;
+
   byte tmp_byte = 0;       
   int bitCount = 0;      
   int pos = 0;            
 
-  *out = malloc(sizeof(byte) * size);  // Cambio aquí: *out en lugar de out
-  if (*out == NULL) return -1;  // Verificación de malloc
+  *out = malloc(sizeof(byte) * size_bytes);  
+  if (*out == NULL) return -1;  
 
   for (int j = 0; j < i; j++) {
       if (buff[j] == '0' || buff[j] == '1') {
@@ -208,7 +211,7 @@ int getCoddedTree(arbol_binario *huff_tree, byte** out){
           bitCount++;
 
           if (bitCount == 8) {
-              (*out)[pos++] = tmp_byte;  // Cambio aquí: (*out)[pos++]
+              (*out)[pos++] = tmp_byte;  
               tmp_byte = 0;
               bitCount = 0;
           }
@@ -220,7 +223,7 @@ int getCoddedTree(arbol_binario *huff_tree, byte** out){
               bitCount++;
 
               if (bitCount == 8) {
-                  (*out)[pos++] = tmp_byte;  // Cambio aquí: (*out)[pos++]
+                  (*out)[pos++] = tmp_byte;  
                   tmp_byte = 0;
                   bitCount = 0;
               }
@@ -230,10 +233,10 @@ int getCoddedTree(arbol_binario *huff_tree, byte** out){
 
   if (bitCount > 0) {
       tmp_byte <<= (8 - bitCount);  
-      (*out)[pos++] = tmp_byte;  // Cambio aquí: (*out)[pos++]
+      (*out)[pos++] = tmp_byte;  
   }
  
-  return size;
+  return size_bits;
 
 }
 
@@ -258,39 +261,11 @@ void getCoddedTree_dfs(arbol_binario *t, posicion p,char* buff,int *i){
 
 
 int getPackedSize(char *buff, int len) {
-  int totalBytes = 0;  
-    int bitCount = 0;    
+  int bits=0;
 
-    for (int i = 0; i < len; i++) {
-        if (buff[i] == '0' || buff[i] == '1') {
-            bitCount++;
-            if (bitCount == 8) {
-                totalBytes++;
-                bitCount = 0;
-            }
-        } else {
-            int remainingBits = 8;
-            while (remainingBits > 0) {
-                int space = 8 - bitCount;  
-                if (remainingBits <= space) {
-                    bitCount += remainingBits;
-                    remainingBits = 0;
-                    if (bitCount == 8) {
-                        totalBytes++;
-                        bitCount = 0;
-                    }
-                } else {
-                    remainingBits -= space;
-                    totalBytes++;
-                    bitCount = 0;
-                }
-            }
-        }
-    }
+  for(int i=0;i<len;++i)
+    if(buff[i] == '0' || buff[i] == '1') bits++;
+    else bits+=8;
 
-    
-    if (bitCount > 0)
-        totalBytes++;
-
-    return totalBytes;
+    return bits;
 }

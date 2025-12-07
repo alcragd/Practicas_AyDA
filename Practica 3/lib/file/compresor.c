@@ -71,7 +71,7 @@ void compress(unsigned char *bytes, long long num_elements,  char *codigo[256], 
     }
     if (fwrite(&h.tree_len, sizeof(h.tree_len), 1, file) != 1) { printf("Error escribiendo tree_len\n"); fclose(file); exit(1); }
     if (h.tree_len > 0 && h.huff_tree != NULL) {
-        if (fwrite(h.huff_tree, sizeof(unsigned char), h.tree_len, file) != h.tree_len) { printf("Error escribiendo huff_tree\n"); fclose(file); exit(1); }
+        if (fwrite(h.huff_tree, sizeof(unsigned char), (h.tree_len+7)/8, file) != (h.tree_len+7)/8) { printf("Error escribiendo huff_tree\n"); fclose(file); exit(1); }
     }
 
     /*Procesar Compressed Data*/
