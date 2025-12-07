@@ -42,13 +42,13 @@ gcc -c compresor.c
 /*
 compress
 
-Descripción: Escribe en 'fileName' la secuencia de bits resultante de
+Descripción: Escribe en 'outputName' la secuencia de bits resultante de
              concatenar los códigos de cada byte del arreglo 'bytes'.
 Parámetros:
     bytes        : datos de entrada a codificar.
     num_elements : número de bytes en 'bytes'.
     codigo       : tabla de códigos; codigo[b] es la cadena de '0'/'1' para b.
-    fileName     : nombre del archivo de salida (binario).
+    outputName     : nombre del archivo de salida (binario).
 
 Comportamiento:
     - Calcula el número total de bits que producirá la codificación.
@@ -58,13 +58,38 @@ Comportamiento:
     - Escribe el buffer resultante en el archivo en modo binario.
     - En caso de error de escritura o creación del archivo termina el programa.
 */
-void compress(unsigned char *bytes, long long num_elements,  char *codigo[256], char* fileName){
+void compress(unsigned char *bytes, long long num_elements,  char *codigo[256], char* outputName,fileHeader h){
+    FILE * file = fopen(outputName, "wb");
+    if(file == NULL){
+        printf("Error al crear el archivo de salida: %s\n", outputName);
+        exit(1);
+    }
+    /*Procesar Header*/
+    if (fwrite(&h.ext_size, sizeof(h.ext_size), 1, file) != 1) { printf("Error escribiendo ext_size\n"); fclose(file); exit(1); }
+    if (h.ext_size > 0 && h.ext != NULL) {
+        if (fwrite(h.ext, sizeof(unsigned char), h.ext_size, file) != h.ext_size) { printf("Error escribiendo ext\n"); fclose(file); exit(1); }
+    }
+    if (fwrite(&h.tree_len, sizeof(h.tree_len), 1, file) != 1) { printf("Error escribiendo tree_len\n"); fclose(file); exit(1); }
+    if (h.tree_len > 0 && h.huff_tree != NULL) {
+        if (fwrite(h.huff_tree, sizeof(unsigned char), h.tree_len, file) != h.tree_len) { printf("Error escribiendo huff_tree\n"); fclose(file); exit(1); }
+    }
 
+    /*Procesar Compressed Data*/
     long long size_bits = 0;
     for(long long i = 0; i < num_elements; i++){
         char *temp = codigo[bytes[i]];
+        if (temp == NULL) { printf("Error: código nulo para símbolo %u\n", bytes[i]); fclose(file); exit(1); }
         int j=0;
-        while(temp[j++] != '\0') size_bits++;
+        while(temp[j] != '\0'){ size_bits++; j++; }
+    }
+
+    if (size_bits == 0) {
+        /* no hay datos -> escribir valid bits = 0 y salir */
+        unsigned char valid_bits = 0;
+        fwrite(&valid_bits, sizeof(unsigned char), 1, file);
+        fflush(file);
+        fclose(file);
+        return;
     }
 
     /* número de bytes necesarios para almacenar los bits */
@@ -72,9 +97,10 @@ void compress(unsigned char *bytes, long long num_elements,  char *codigo[256], 
 
     int count_bit = 0, code_pos = 0;
     unsigned char tmp_byte = 0;
-    unsigned char *compress = malloc(out_size * sizeof(unsigned char));
+    unsigned char *compress = malloc((size_t)out_size * sizeof(unsigned char));
     if (compress == NULL) {
         printf("Error al reservar memoria para compresión\n");
+        fclose(file);
         exit(1);
     }
 
@@ -91,6 +117,7 @@ void compress(unsigned char *bytes, long long num_elements,  char *codigo[256], 
             count_bit++;
 
             if(count_bit == 8){
+                if (written_bytes >= out_size) { printf("Error: overflow buffer compresion\n"); free(compress); fclose(file); exit(1); }
                 compress[written_bytes++] = tmp_byte;
                 count_bit = 0;
                 tmp_byte = 0;
@@ -98,15 +125,13 @@ void compress(unsigned char *bytes, long long num_elements,  char *codigo[256], 
         }
     }
     if(count_bit > 0){
+        if (written_bytes >= out_size) { printf("Error: overflow buffer compresion\n"); free(compress); fclose(file); exit(1); }
         compress[written_bytes++] = tmp_byte;
     }
 
-    FILE * file = fopen(fileName, "wb");
-    if(file == NULL){
-        printf("Error al crear el archivo de salida: %s\n", fileName);
-        free(compress);
-        exit(1);
-    }
+    /* escribir cuántos bits útiles hay en el último byte (1..8), 0 no usado aquí */
+    unsigned char valid_bits = (unsigned char)(count_bit == 0 ? 8 : count_bit);
+    if (fwrite(&valid_bits, sizeof(unsigned char), 1, file) != 1) { printf("Error escribiendo valid_bits\n"); free(compress); fclose(file); exit(1); }
 
     long long written = fwrite(compress, sizeof(unsigned char), written_bytes, file);
     if (written != written_bytes) {

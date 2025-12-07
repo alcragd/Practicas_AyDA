@@ -33,24 +33,37 @@ gcc -c compresor.c
 #define COMPRESSOR_H
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 /*
 readFile
 
 Estructura que contiene:
-- bytes        : buffer con los bytes leidos del archivo (heap).
+- bytes        : buffer con los bytes leidos del archivo.
 - frecuencias  : contador por cada valor de byte [0..255].
 - num_elements : número total de bytes leídos.
 
 Notas:
 - bytes debe liberarse por el llamador (free).
 */
+
+#ifndef byte
+    typedef unsigned char byte;
+#endif
+
 typedef struct 
 {
     unsigned char *bytes;
     int frecuencias[256];
     long long num_elements;
 }readFile;
+
+typedef struct {
+    byte ext_size;
+    char* ext;
+    uint16_t tree_len;
+    byte *huff_tree;
+} fileHeader;
 
 /*
 readF
@@ -75,7 +88,7 @@ readFile readF(char *name);
 compress
 
 Descripción:
-    Escribe en 'fileName' la secuencia de bits codificados salvo empaquetados
+    Escribe en 'outputName' la secuencia de bits codificados salvo empaquetados
     por bytes. Las cadenas en 'codigo' deben representar los códigos binarios
     ('0'/'1') terminados en '\0'.
 
@@ -83,7 +96,7 @@ Recibe:
     unsigned char *byte  : arreglo de bytes a codificar.
     long long num_elements : número de elementos en 'byte'.
     char *codigo[256]    : arreglo de punteros a cadenas de código para cada símbolo.
-    char *fileName       : ruta de salida (archivo binario).
+    char *outputName       : ruta de salida (archivo binario).
 
 Devuelve:
     Ninguno. En caso de error en escritura termina el programa (exit).
@@ -93,6 +106,6 @@ Observaciones:
       Si se requiere información adicional (tabla de códigos, tamaño original),
       debe añadirse por el llamador.
 */
-void compress(unsigned char *byte, long long num_elements,  char *codigo[256], char* fileName);
+void compress(unsigned char *byte, long long num_elements,  char *codigo[256], char* outputName,fileHeader h);
 
 #endif /*COMPRESSOR_H*/

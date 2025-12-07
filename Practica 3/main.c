@@ -41,6 +41,8 @@ void PrintLeaves(arbol_binario *t, posicion p);
 void PrintTreeVisual(arbol_binario *t, posicion p, int depth);
 void PrintTree(arbol_binario *t);
 
+void file_compress(char* fileName,char* fileExt);
+
 int main(int argc, char** argv){
     if(argc != 2){
         printf("Error al leer datos");
@@ -50,16 +52,25 @@ int main(int argc, char** argv){
     /* buffers para separar nombre y extensión del archivo */
     char name[512] = {0};
     char ext[64] = {0};
-    char outname[600];
+    
+    sscanf(argv[1], "%511[^.].%63s", name, ext);
 
-    /* parsea nombre.ext -> name, ext (evita overflow) */
-    int n = sscanf(argv[1], "%511[^.].%63s", name, ext);
+    file_compress(name,ext);
+   
 
+    return 0;
+}
+
+
+void file_compress(char* fileName,char* fileExt){
     /* arreglo de punteros a códigos por byte (inicializados a NULL) */
     char* Codigos[256] = {0};
 
     /* lectura del archivo: retorna frecuencias, bytes y tamaño */
-    readFile rf = readF(argv[1]);
+    char f[576] = {0};
+    sprintf(f,"%s.%s",fileName,fileExt);
+
+    readFile rf = readF(f);
     printf("El archivo se leyo correctamente \n");
 
     arbol_binario tree;
@@ -75,14 +86,34 @@ int main(int argc, char** argv){
         Codigos[(unsigned char)bc[i].b] = bc[i].codigo;
 
     /* nombre de salida: <nombre>_compressed.dat */
-    snprintf(outname, sizeof(outname), "%s_compressed.dat", name);
+    char outname[600];
+    snprintf(outname, sizeof(outname), "%s_compressed.dat", fileName);
+
+    byte *codded_tree = NULL;  
+
+    fileHeader fh;
+    size_t ext_len = strlen(fileExt);
+
+    // Asignar memoria para la extensión
+    fh.ext = malloc(ext_len + 1);  // +1 para el '\0'
+    if (fh.ext == NULL) {
+        fprintf(stderr, "Error: no se pudo asignar memoria para extensión\n");
+        return;
+    }
+
+    strcpy(fh.ext, fileExt);
+    fh.ext_size = ext_len;
+    fh.tree_len = getCoddedTree(&tree, &codded_tree); 
+    fh.huff_tree = codded_tree;
+
 
     /* realiza la compresión y escribe el archivo de salida */
-    compress(rf.bytes, rf.num_elements, Codigos, outname);
+    compress(rf.bytes, rf.num_elements, Codigos, outname, fh);
 
-    return 0;
+    // Liberar memoria al final
+    free(fh.ext);
+    free(codded_tree);
 }
-
 
 /*
 PrintLeaves
