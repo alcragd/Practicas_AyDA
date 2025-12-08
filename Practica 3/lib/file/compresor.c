@@ -212,3 +212,40 @@ readFile readF(char *name){
     return rf;
 }
 
+
+
+fileHeader readCompressedF(char *fileN){
+    FILE * file = fopen(fileN, "rb");
+    if(file == NULL){
+        printf("Error al abrir el archivo: %s\n", fileN);
+        exit(1);
+    }
+
+    fileHeader fh = {0};
+
+    fread(&fh.ext_size, 1, 1, file);
+    fh.ext = malloc(fh.ext_size);
+    fread(fh.ext, 1, fh.ext_size, file);
+    fread(&fh.tree_len, sizeof(uint16_t), 1, file);
+    fh.huff_tree = malloc(fh.tree_len);
+    fread(fh.huff_tree, 1, fh.tree_len, file);
+    fread(&fh.last_valid_bit, 1, 1, file);
+
+    // === Leer el resto del archivo ===
+
+    long pos_actual = ftell(file);
+    fseek(file, 0, SEEK_END);
+    long size_total = ftell(file);
+    fseek(file, pos_actual, SEEK_SET);
+    long remaining = size_total - pos_actual;
+    fh.compressedData = malloc(remaining);
+    fread(fh.compressedData, 1, remaining, file);
+
+    fclose(file);
+
+    return fh;
+}
+
+void decompress(){
+
+}

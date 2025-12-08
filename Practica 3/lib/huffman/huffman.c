@@ -259,7 +259,6 @@ void getCoddedTree_dfs(arbol_binario *t, posicion p,char* buff,int *i){
   getCoddedTree_dfs(t,r,buff,i);
 }
 
-
 int getPackedSize(char *buff, int len) {
   int bits=0;
 
@@ -269,3 +268,31 @@ int getPackedSize(char *buff, int len) {
 
     return bits;
 }
+
+void decodeTree(arbol_binario *t,byte *codded_t,unsigned short tree_len){
+  // TODO
+  NewRightSon(t,NULL,(elemento){});
+
+  
+
+}
+
+void decodeTree_dfs(arbol_binario *t, posicion p, byte *c,int *i,unsigned short len){
+
+  if((*c)&(1<<*i)){
+    
+  }
+  else{
+    (*i)++;
+    if(LeftfSon() != NULL){
+      NewLeftSon()
+    }
+    else{
+      NewRightSon()
+    }
+  }
+
+
+}
+
+// 01A01B1C 10001010101010101

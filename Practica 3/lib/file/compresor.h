@@ -59,10 +59,12 @@ typedef struct
 }readFile;
 
 typedef struct {
-    byte ext_size;
-    char* ext;
-    uint16_t tree_len;
-    byte *huff_tree;
+    byte ext_size; // 1 byte
+    char* ext;  // ext_size bytes
+    uint16_t tree_len; // 2 bytes
+    byte *huff_tree;   // tree_len bytes
+    byte last_valid_bit; // 1 byte
+    byte *compressedData; // idk bytes
 } fileHeader;
 
 /*
