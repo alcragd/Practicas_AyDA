@@ -35,6 +35,12 @@ gcc -c compresor.c
 #include <stdlib.h>
 #include <stdint.h>
 
+#include "../tree/bintree.h"
+#include "../tree/fasttree.h"
+#include "../huffman/huffman.h"
+
+
+
 /*
 readFile
 
@@ -65,6 +71,9 @@ typedef struct {
     byte *huff_tree;   // tree_len bytes
     byte last_valid_bit; // 1 byte
     byte *compressedData; // idk bytes
+
+    long long compressedData_size;  // AGREGAR ESTO
+
 } fileHeader;
 
 /*
@@ -109,5 +118,8 @@ Observaciones:
       debe añadirse por el llamador.
 */
 void compress(unsigned char *byte, long long num_elements,  char *codigo[256], char* outputName,fileHeader h);
+fileHeader readCompressedF(char *fileN);
+void decompress(fileHeader fh, char* name);
+
 
 #endif /*COMPRESSOR_H*/

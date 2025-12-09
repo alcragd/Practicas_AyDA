@@ -42,36 +42,87 @@ void PrintTreeVisual(arbol_binario *t, posicion p, int depth);
 void PrintTree(arbol_binario *t);
 
 void file_compress(char* fileName,char* fileExt);
+void file_decompress(char* fileName, char* outputName);
 
 int main(int argc, char** argv){
-    if(argc != 2){
-        printf("Error al leer datos");
+    if(argc != 3){
+        printf("Uso:\n");
+        printf("  Comprimir:   %s archivo.ext 1\n", argv[0]);
+        printf("  Descomprimir: %s archivo_compressed.dat 2\n", argv[0]);
         return 1; 
     }
 
-    /* buffers para separar nombre y extensión del archivo */
-    char name[512] = {0};
-    char ext[64] = {0};
+    int opc = atoi(argv[2]);
 
-    
-    sscanf(argv[1], "%511[^.].%63s", name, ext);
+    if(opc == 1)
+    {
+        char name[512] = {0};
+        char ext[64] = {0};
+        
+        // Validar formato del nombre de archivo
+        if (sscanf(argv[1], "%511[^.].%63s", name, ext) != 2) {
+            printf("Error: formato de archivo inválido (esperado: nombre.extensión)\n");
+            return 1;
+        }
 
-    
-    // printf("%s\n",name);
-    // printf("%s\n",ext);
-
-    file_compress(name,ext);
-   
+        file_compress(name, ext);
+        printf("Compresión completada: %s_compressed.dat\n", name);
+    }
+    else if (opc == 2)
+    {
+        file_decompress(argv[1], "uncompressed");
+    }
+    else
+    {
+        printf("Error: opción inválida. Use 1 para comprimir, 2 para descomprimir\n");
+        return 1;
+    }
 
     return 0;
 }
 
+void file_decompress(char* fileName, char* outputName){
+    // Leer archivo comprimido
+    fileHeader fh = readCompressedF(fileName);
+    
+    // Validar que se leyó correctamente
+    if (fh.huff_tree == NULL || fh.tree_len == 0) {
+        printf("Error: archivo comprimido inválido o corrupto\n");
+        // Liberar memoria parcialmente asignada
+        if (fh.ext != NULL) free(fh.ext);
+        if (fh.huff_tree != NULL) free(fh.huff_tree);
+        if (fh.compressedData != NULL) free(fh.compressedData);
+        return;
+    }
+    
+    printf("Archivo comprimido leído correctamente\n");
+    printf("  Extensión: %s\n", fh.ext);
+    printf("  Tamaño del árbol: %u bits\n", fh.tree_len);
+    printf("  Datos comprimidos: %lld bytes\n", fh.compressedData_size);
+    printf("  Bits válidos último byte: %u\n", fh.last_valid_bit);
+    
+    // Descomprimir
+    decompress(fh, outputName);
+    
+    printf("Descompresión completada exitosamente\n");
+    
+    // Liberar memoria asignada por readCompressedF
+    if (fh.ext != NULL) {
+        free(fh.ext);
+    }
+    if (fh.huff_tree != NULL) {
+        free(fh.huff_tree);
+    }
+    if (fh.compressedData != NULL) {
+        free(fh.compressedData);
+    }
+}
 
 void file_compress(char* fileName,char* fileExt){
-    /* arreglo de punteros a códigos por byte (inicializados a NULL) */
+   
     char* Codigos[256] = {0};
 
-    /* lectura del archivo: retorna frecuencias, bytes y tamaño */
+
     char f[576] = {0};
     sprintf(f,"%s.%s",fileName,fileExt);
 
@@ -99,8 +150,7 @@ void file_compress(char* fileName,char* fileExt){
     fileHeader fh;
     size_t ext_len = strlen(fileExt);
 
-    // Asignar memoria para la extensión
-    fh.ext = malloc(ext_len + 1);  // +1 para el '\0'
+    fh.ext = malloc(ext_len + 1);  
     if (fh.ext == NULL) {
         fprintf(stderr, "Error: no se pudo asignar memoria para extensión\n");
         return;
@@ -110,9 +160,6 @@ void file_compress(char* fileName,char* fileExt){
     fh.ext_size = ext_len;
     fh.tree_len = getCoddedTree(&tree, &codded_tree); 
     fh.huff_tree = codded_tree;
-
-    
-
 
     /* realiza la compresión y escribe el archivo de salida */
     compress(rf.bytes, rf.num_elements, Codigos, outname, fh);

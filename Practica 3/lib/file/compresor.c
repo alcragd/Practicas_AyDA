@@ -223,12 +223,35 @@ fileHeader readCompressedF(char *fileN){
 
     fileHeader fh = {0};
 
-    fread(&fh.ext_size, 1, 1, file);
-    fh.ext = malloc(fh.ext_size);
-    fread(fh.ext, 1, fh.ext_size, file);
+    // Leer tamaño de extensión
+    if (fread(&fh.ext_size, 1, 1, file) != 1) {
+        printf("Error al leer ext_size\n");
+        fclose(file);
+        exit(1);
+    }
+
+    // Asignar memoria + 1 para '\0'
+    fh.ext = malloc(fh.ext_size + 1);
+    if (fh.ext == NULL) {
+        printf("Error al reservar memoria para ext\n");
+        fclose(file);
+        exit(1);
+    }
+    
+    // Leer extensión
+    if (fread(fh.ext, 1, fh.ext_size, file) != fh.ext_size) {
+        printf("Error al leer ext\n");
+        free(fh.ext);
+        fclose(file);
+        exit(1);
+    }
+    
+    // AGREGAR terminador nulo
+    fh.ext[fh.ext_size] = '\0';
+
     fread(&fh.tree_len, sizeof(uint16_t), 1, file);
-    fh.huff_tree = malloc(fh.tree_len);
-    fread(fh.huff_tree, 1, fh.tree_len, file);
+    fh.huff_tree = malloc((fh.tree_len+7)/8);
+    fread(fh.huff_tree, 1, (fh.tree_len+7)/8, file);
     fread(&fh.last_valid_bit, 1, 1, file);
 
     // === Leer el resto del archivo ===
@@ -238,14 +261,88 @@ fileHeader readCompressedF(char *fileN){
     long size_total = ftell(file);
     fseek(file, pos_actual, SEEK_SET);
     long remaining = size_total - pos_actual;
-    fh.compressedData = malloc(remaining);
-    fread(fh.compressedData, 1, remaining, file);
+
+    if (remaining > 0) {
+        fh.compressedData = malloc(remaining);
+        if (fh.compressedData == NULL) {
+            printf("Error al reservar memoria para compressedData\n");
+            free(fh.ext);
+            free(fh.huff_tree);
+            fclose(file);
+            exit(1);
+        }
+        if (fread(fh.compressedData, 1, remaining, file) != (size_t)remaining) {
+            printf("Error al leer compressedData\n");
+            free(fh.ext);
+            free(fh.huff_tree);
+            free(fh.compressedData);
+            fclose(file);
+            exit(1);
+        }
+        fh.compressedData_size = remaining;  // GUARDAR TAMAÑO
+    } else {
+        fh.compressedData = NULL;
+        fh.compressedData_size = 0;
+    }
 
     fclose(file);
-
     return fh;
 }
 
-void decompress(){
+void decompress(fileHeader fh, char* name){
+   
+    char fileName[512] = {0};
+    if(name[0] == '\0') name = "uncompressed";  
+    snprintf(fileName, sizeof(fileName), "%s.%s", name, (char*)fh.ext);
 
+    FILE * file = fopen(fileName, "wb");
+    if(file == NULL){
+        printf("Error al crear archivo de salida: %s\n", fileName);
+        exit(1);
+    }
+
+
+    arbol_binario tree;
+    decodeTree(&tree, fh.huff_tree, fh.tree_len);
+
+    if (fh.compressedData_size == 0 || fh.compressedData == NULL) {
+        printf("Advertencia: no hay datos comprimidos\n");
+        Destroy(&tree);
+        fclose(file);
+        return;
+    }
+
+    long long size_bits = (fh.compressedData_size - 1) * 8 + fh.last_valid_bit;
+    long long byte_idx = 0, bit_idx = 0, bits_read = 0;
+
+    posicion p=Root(&tree);
+    while(bits_read < size_bits){
+        int bit = (fh.compressedData[byte_idx] >> (7 - bit_idx)) & 1;
+        
+        if(bit) p=RightSon(&tree,p); 
+        else p=LeftSon(&tree,p);
+        
+        if(RightSon(&tree,p)==NULL && LeftSon(&tree,p)==NULL)
+        {
+            elemento e = ReadNode(&tree,p);
+            if (fwrite(&e.b, 1, 1, file) != 1) {
+                printf("Error al escribir byte descomprimido\n");
+                Destroy(&tree);
+                fclose(file);
+                exit(1);
+            }
+            p=Root(&tree);
+        }
+        
+        bit_idx++;
+        bits_read++;
+        if(bit_idx >= 8){
+            byte_idx++;
+            bit_idx = 0;
+        }
+    }
+
+    Destroy(&tree);
+    fclose(file);
 }
+
