@@ -36,7 +36,6 @@ gcc -c compresor.c
 #include <stdint.h>
 
 #include "../tree/bintree.h"
-#include "../tree/fasttree.h"
 #include "../huffman/huffman.h"
 
 

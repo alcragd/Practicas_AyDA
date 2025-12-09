@@ -301,7 +301,6 @@ void decompress(fileHeader fh, char* name){
         exit(1);
     }
 
-
     arbol_binario tree;
     decodeTree(&tree, fh.huff_tree, fh.tree_len);
 
@@ -312,26 +311,61 @@ void decompress(fileHeader fh, char* name){
         return;
     }
 
-    long long size_bits = (fh.compressedData_size - 1) * 8 + fh.last_valid_bit;
-    long long byte_idx = 0, bit_idx = 0, bits_read = 0;
+    long long size_bits;
+    if (fh.last_valid_bit == 8) {
+        size_bits = fh.compressedData_size * 8;
+    } else {
+        size_bits = (fh.compressedData_size - 1) * 8 + fh.last_valid_bit;
+    }
 
-    posicion p=Root(&tree);
+    long long byte_idx = 0, bit_idx = 0, bits_read = 0;
+    posicion p = Root(&tree);
+    
     while(bits_read < size_bits){
+        // VALIDAR que p es válido antes de continuar
+        if (p == NULL || NullNode(&tree, p)) {
+            printf("Error: posición inválida en el árbol durante descompresión\n");
+            printf("  bits_read=%lld, size_bits=%lld\n", bits_read, size_bits);
+            printf("  byte_idx=%lld, bit_idx=%lld\n", byte_idx, bit_idx);
+            Destroy(&tree);
+            fclose(file);
+            exit(1);
+        }
+        
         int bit = (fh.compressedData[byte_idx] >> (7 - bit_idx)) & 1;
         
-        if(bit) p=RightSon(&tree,p); 
-        else p=LeftSon(&tree,p);
+        posicion left = LeftSon(&tree, p);
+        posicion right = RightSon(&tree, p);
         
-        if(RightSon(&tree,p)==NULL && LeftSon(&tree,p)==NULL)
-        {
-            elemento e = ReadNode(&tree,p);
+        // Navegar al hijo apropiado
+        if(bit) {
+            if (right == NULL || NullNode(&tree, right)) {
+                printf("Error: hijo derecho nulo - árbol malformado\n");
+                Destroy(&tree);
+                fclose(file);
+                exit(1);
+            }
+            p = right;
+        } else {
+            if (left == NULL || NullNode(&tree, left)) {
+                printf("Error: hijo izquierdo nulo - árbol malformado\n");
+                Destroy(&tree);
+                fclose(file);
+                exit(1);
+            }
+            p = left;
+        }
+        
+        // Si llegamos a una hoja
+        if(RightSon(&tree, p) == NULL && LeftSon(&tree, p) == NULL) {
+            elemento e = ReadNode(&tree, p);
             if (fwrite(&e.b, 1, 1, file) != 1) {
                 printf("Error al escribir byte descomprimido\n");
                 Destroy(&tree);
                 fclose(file);
                 exit(1);
             }
-            p=Root(&tree);
+            p = Root(&tree);  // Volver a la raíz
         }
         
         bit_idx++;

@@ -186,16 +186,13 @@ int cmpFreq(const void *a, const void *b)
 
 
 int getCoddedTree(arbol_binario *huff_tree, byte** out){
-  char buff[1024];  
-  int i = 0,size_bits,size_bytes;
+  char buff[4096];  // Buffer más grande
+  int i = 0, size_bits, size_bytes;
   
   getCoddedTree_dfs(huff_tree, Root(huff_tree), buff, &i);
-  buff[i] = '\0';  
-
-  //printf("%s",buff);
-
-  size_bits = getPackedSize(buff,i);
-  size_bytes = (size_bits+7)/8;
+  
+  size_bits = i;  // Ahora es simple: cada char es 1 bit
+  size_bytes = (size_bits + 7) / 8;
 
   byte tmp_byte = 0;       
   int bitCount = 0;      
@@ -204,30 +201,16 @@ int getCoddedTree(arbol_binario *huff_tree, byte** out){
   *out = malloc(sizeof(byte) * size_bytes);  
   if (*out == NULL) return -1;  
 
+  // Empacar los bits '0'/'1' en bytes
   for (int j = 0; j < i; j++) {
-      if (buff[j] == '0' || buff[j] == '1') {
-          int bit = buff[j] - '0';
-          tmp_byte = (tmp_byte << 1) | (bit & 1);
-          bitCount++;
+      int bit = buff[j] - '0';  // Convertir '0'->'0', '1'->'1'
+      tmp_byte = (tmp_byte << 1) | (bit & 1);
+      bitCount++;
 
-          if (bitCount == 8) {
-              (*out)[pos++] = tmp_byte;  
-              tmp_byte = 0;
-              bitCount = 0;
-          }
-      } else {
-          byte value = (byte)buff[j];
-          for (int b = 7; b >= 0; b--) {  
-              int bit = (value >> b) & 1;
-              tmp_byte = (tmp_byte << 1) | bit;
-              bitCount++;
-
-              if (bitCount == 8) {
-                  (*out)[pos++] = tmp_byte;  
-                  tmp_byte = 0;
-                  bitCount = 0;
-              }
-          }
+      if (bitCount == 8) {
+          (*out)[pos++] = tmp_byte;  
+          tmp_byte = 0;
+          bitCount = 0;
       }
   }
 
@@ -240,7 +223,7 @@ int getCoddedTree(arbol_binario *huff_tree, byte** out){
 
 }
 
-void getCoddedTree_dfs(arbol_binario *t, posicion p,char* buff,int *i){
+void getCoddedTree_dfs(arbol_binario *t, posicion p, char* buff, int *i){
   if (p == NULL || NullNode(t, p))
     return;
 
@@ -248,25 +231,27 @@ void getCoddedTree_dfs(arbol_binario *t, posicion p,char* buff,int *i){
   posicion r = RightSon(t, p);
 
   if (NullNode(t, l) && NullNode(t, r)) {
-    elemento e = ReadNode(t,p);
-    buff[(*i)++]='1';
-    buff[(*i)++]=(char)e.b;
+    // NODO HOJA: guardar como "1" + 8 bits del símbolo
+    elemento e = ReadNode(t, p);
+    buff[(*i)++] = '1';
+    
+    // Convertir e.b a 8 dígitos binarios
+    for (int b = 7; b >= 0; b--) {
+      int bit = (e.b >> b) & 1;
+      buff[(*i)++] = (char)('0' + bit);  // '0' o '1'
+    }
     return;
   }
 
-  buff[(*i)++]='0';
-  getCoddedTree_dfs(t,l,buff,i);
-  getCoddedTree_dfs(t,r,buff,i);
+  // NODO INTERNO: guardar como "0"
+  buff[(*i)++] = '0';
+  getCoddedTree_dfs(t, l, buff, i);
+  getCoddedTree_dfs(t, r, buff, i);
 }
 
 int getPackedSize(char *buff, int len) {
-  int bits=0;
-
-  for(int i=0;i<len;++i)
-    if(buff[i] == '0' || buff[i] == '1') bits++;
-    else bits+=8;
-
-    return bits;
+  // Ahora buff contiene SOLO '0' y '1', sin bytes especiales
+  return len;  // Cada carácter es 1 bit
 }
 
 void decodeTree(arbol_binario *t, byte *codded_t, unsigned short tree_len){
@@ -333,26 +318,3 @@ void decodeTree(arbol_binario *t, byte *codded_t, unsigned short tree_len){
   }
   P_Destroy(&S);
 }
-
-
-
-
-
-
-
-/*
-
-
-
-
-  void treeDeco(){
-    
-    
-  
-  }
-
-
-
-
-
-*/
