@@ -40,6 +40,7 @@ gcc -c huffman.c
 #include <stdlib.h>
 #include <string.h>
 
+#include "../pila_dinamica/pila_din.h"
 #include "../tree/bintree.h"
 
 #ifndef byte
@@ -136,6 +137,7 @@ int cmpFreq(const void *a, const void *b);
 int getCoddedTree(arbol_binario *huff_tree, byte** out);
 void getCoddedTree_dfs(arbol_binario *t, posicion p,char* buff,int *i);
 int getPackedSize(char *buff, int len);
+void decodeTree(arbol_binario *t, byte *codded_t, unsigned short tree_len);
 
 
 #endif

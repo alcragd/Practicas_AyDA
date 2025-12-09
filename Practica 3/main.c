@@ -111,6 +111,8 @@ void file_compress(char* fileName,char* fileExt){
     fh.tree_len = getCoddedTree(&tree, &codded_tree); 
     fh.huff_tree = codded_tree;
 
+    
+
 
     /* realiza la compresión y escribe el archivo de salida */
     compress(rf.bytes, rf.num_elements, Codigos, outname, fh);

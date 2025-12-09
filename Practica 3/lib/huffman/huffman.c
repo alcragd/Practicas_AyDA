@@ -269,30 +269,90 @@ int getPackedSize(char *buff, int len) {
     return bits;
 }
 
-void decodeTree(arbol_binario *t,byte *codded_t,unsigned short tree_len){
-  // TODO
-  NewRightSon(t,NULL,(elemento){});
+void decodeTree(arbol_binario *t, byte *codded_t, unsigned short tree_len){
+  pila S;
+  P_Initialize(&S);
+  int byte_idx = 0, bit_idx = 0;
+  int bits_read = 0;
 
-  
+  while(bits_read < tree_len){
+      int leaf = (codded_t[byte_idx] >> (7 - bit_idx)) & 1;
+      bits_read++;
+      bit_idx++;
+      if(bit_idx >= 8){
+        byte_idx++;
+        bit_idx = 0;
+      }
 
+      if(!leaf){
+          // NODO INTERNO
+          if (P_Empty(&S)) { 
+            Initialize(t); 
+            NewRightSon(t, NULL, (elemento){0, 0}); 
+            P_Push(&S, (elem){Root(t)}); 
+          }
+          else{
+            posicion padre =P_Top(&S).p;
+            arbol_binario tmp_tree;
+            Initialize(&tmp_tree);
+            NewRightSon(&tmp_tree, NULL, (elemento){0, 0});
+            posicion newNode = Root(&tmp_tree);
+            
+            if(LeftSon(t, padre) == NULL) AttachLeftSubtree(t, padre, tmp_tree);
+            else{
+              AttachRightSubtree(t, padre, tmp_tree);
+              P_Pop(&S);
+            }
+            P_Push(&S, (elem){newNode});
+          }
+        } 
+        else{
+          // NODO HOJA
+          byte value = 0;
+          for (int j = 0; j < 8; ++j){
+            int bit = (codded_t[byte_idx] >> (7 - bit_idx)) & 1;
+            value = (value << 1) | bit;
+            bits_read++;
+            bit_idx++;
+            if(bit_idx >= 8){
+              byte_idx++;
+              bit_idx = 0;
+            }
+          }
+
+          posicion padre = P_Top(&S).p;
+          
+          if(LeftSon(t, padre) == NULL) {
+            NewLeftSon(t, padre, (elemento){value, 0});
+          }
+          else {
+            NewRightSon(t, padre, (elemento){value, 0});
+            P_Pop(&S);
+          }     
+      }
+  }
+  P_Destroy(&S);
 }
 
-void decodeTree_dfs(arbol_binario *t, posicion p, byte *c,int *i,unsigned short len){
 
-  if((*c)&(1<<*i)){
+
+
+
+
+
+/*
+
+
+
+
+  void treeDeco(){
     
-  }
-  else{
-    (*i)++;
-    if(LeftfSon() != NULL){
-      NewLeftSon()
-    }
-    else{
-      NewRightSon()
-    }
+    
+  
   }
 
 
-}
 
-// 01A01B1C 10001010101010101
+
+
+*/
