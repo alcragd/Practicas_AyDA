@@ -32,6 +32,7 @@ Observaciones:
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "lib/huffman/huffman.h"
 #include "lib/file/compresor.h"
 
@@ -51,8 +52,10 @@ int main(int argc, char** argv){
         printf("  Descomprimir: %s archivo_compressed.dat 2\n", argv[0]);
         return 1; 
     }
-
+    
     int opc = atoi(argv[2]);
+    clock_t start, end;
+    double cpu_time_used;
 
     if(opc == 1)
     {
@@ -64,13 +67,24 @@ int main(int argc, char** argv){
             printf("Error: formato de archivo inválido (esperado: nombre.extensión)\n");
             return 1;
         }
-
+        start=clock();
         file_compress(name, ext);
+        end=clock();
+        cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+        // Imprimir en un formato que el script pueda leer fácilmente
+        printf("TIEMPO_EJECUCION: %f\n", cpu_time_used);
+
         printf("Compresión completada: %s_compressed.dat\n", name);
+
     }
     else if (opc == 2)
     {
+        start=clock();
         file_decompress(argv[1], "uncompressed");
+        end=clock();
+        cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+        // Imprimir en un formato que el script pueda leer fácilmente
+        printf("TIEMPO_EJECUCION: %f\n", cpu_time_used);
     }
     else
     {
