@@ -81,6 +81,27 @@ int main(int argc, char** argv){
     return 0;
 }
 
+
+/*
+file_decompress
+
+Descripción:
+    Orquestador del proceso de descompresión. Lee el archivo comprimido, extrae
+    la cabecera (metadatos), reconstruye el árbol de Huffman y recupera el 
+    archivo original.
+
+Parámetros:
+    fileName   : Ruta del archivo comprimido (.dat) a procesar.
+    outputName : Nombre base que se le dará al archivo resultante.
+
+Comportamiento:
+    - Llama a readCompressedF para cargar el header (extensión, árbol, datos).
+    - Valida la integridad de los datos leídos.
+    - Invoca a la función de descompresión bit a bit.
+    - Informa las estadísticas del archivo (tamaño del árbol, bits válidos).
+    - Garantiza la liberación de toda la memoria dinámica del header (ext, 
+      huff_tree y compressedData).
+*/
 void file_decompress(char* fileName, char* outputName){
     // Leer archivo comprimido
     fileHeader fh = readCompressedF(fileName);
@@ -118,6 +139,25 @@ void file_decompress(char* fileName, char* outputName){
     }
 }
 
+/*
+file_compress
+
+Descripción:
+    Orquestador del proceso de compresión. Lee un archivo original, construye
+    el árbol de Huffman, genera los códigos binarios, serializa el árbol para
+    la cabecera y finalmente genera el archivo comprimido (.dat).
+
+Parámetros:
+    fileName : Nombre del archivo base (sin extensión).
+    fileExt  : Extensión original del archivo (ej. "txt", "jpg").
+
+Comportamiento:
+    - Carga el archivo completo a memoria y calcula frecuencias.
+    - Genera un árbol de Huffman y su tabla de códigos asociada.
+    - Serializa la estructura del árbol en un formato bitstream para incluirlo en el header.
+    - Crea un archivo de salida con el sufijo "_compressed.dat".
+    - Libera la memoria dinámica utilizada para la extensión y el árbol codificado.
+*/
 void file_compress(char* fileName,char* fileExt){
    
     char* Codigos[256] = {0};
