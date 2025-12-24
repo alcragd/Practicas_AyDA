@@ -18,6 +18,8 @@ Observaciones:
 
 ================================================================================
 */
+#ifndef BINTREE_H
+#define BINTREE_H
 
 #define TRUE 1
 #define FALSE 0
@@ -186,3 +188,5 @@ Descripción: Adjunta el subárbol 'sub' como hijo derecho del nodo p.
 Si el árbol está vacío, 'sub' se convierte en la raíz.
 */
 void AttachRightSubtree(arbol_binario *a, posicion p, arbol_binario sub);
+
+#endif

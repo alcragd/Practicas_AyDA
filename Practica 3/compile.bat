@@ -1,1 +1,1 @@
-gcc .\main.c .\lib\huffman\huffman.c .\lib\tree\*.c .\lib\file\compresor.c .\lib\pila_dinamica\pila_din.c -o bin/tuffman
+gcc .\main.c .\lib\huffman\huffman.c .\lib\tree\bintree.c .\lib\file\compresor.c .\lib\pila_dinamica\pila_din.c -o huffman.exe

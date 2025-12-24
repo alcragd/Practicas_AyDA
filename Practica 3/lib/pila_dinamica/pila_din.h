@@ -1,3 +1,6 @@
+#ifndef PILA_DIN_H
+#define PILA_DIN_H
+
 #include "../tree/bintree.h"
 
 #define TRUE 1
@@ -72,3 +75,5 @@ Destroy(S);
 Efecto: Recibe una pila y la libera completamente
 */
 void P_Destroy(pila *S);
+
+#endif
