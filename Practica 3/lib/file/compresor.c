@@ -2,7 +2,7 @@
 ================================================================================
 compresor.c
 Versión: 1.0
-Fecha: Junio 2025
+Fecha: Diciembre 2025
 Autores: Coyol Moreno Angel Zoe
          Ramirez Hernandez Christian Isaac
          Ramos Mendoza Miguel Angel
@@ -213,7 +213,21 @@ readFile readF(char *name){
 }
 
 
+/*
+readCompressedF
 
+Descripción:
+    Lee un archivo con formato comprimido personalizado. Extrae la extensión 
+    original, el árbol de Huffman serializado, el indicador de bits válidos 
+    y el cuerpo de datos comprimidos.
+
+Parámetros:
+    fileN : Ruta del archivo comprimido (.dat).
+
+Devuelve:
+    Estructura fileHeader con todos los campos poblados y memoria dinámica 
+    asignada para los datos. Termina el programa en caso de error de lectura.
+*/
 fileHeader readCompressedF(char *fileN){
     FILE * file = fopen(fileN, "rb");
     if(file == NULL){
@@ -289,6 +303,23 @@ fileHeader readCompressedF(char *fileN){
     return fh;
 }
 
+/*
+decompress
+
+Descripción:
+    Realiza la descompresión lógica del archivo. Utiliza el árbol reconstruido 
+    para navegar bit a bit a través de los datos comprimidos hasta identificar 
+    hojas (bytes originales) y escribirlos en el archivo de salida.
+
+Parámetros:
+    fh   : Estructura de cabecera con los datos y el árbol necesario.
+    name : Nombre base para el archivo de salida (se le concatenará la extensión original).
+
+Comportamiento:
+    - Crea el archivo de salida con la extensión recuperada del header.
+    - Traduce el flujo de bits navegando por el árbol desde la raíz.
+    - Maneja el caso especial del último byte usando last_valid_bit.
+*/
 void decompress(fileHeader fh, char* name){
    
     char fileName[512] = {0};

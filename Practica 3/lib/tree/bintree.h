@@ -1,8 +1,8 @@
 /*================================================================================
-TADArbol_bin.h
+bintree.h
 Versión: 1.0
 Fecha: Junio 2025
-Autor: Edgardo Adrián Franco Martínez - Mayo 2021
+Autor: Edgardo Adrián Franco Martínez - Mayo 2021 - Diciembre 2025
 Documentación: Coyol Moreno Angel Zoe
 
 Descripción:

@@ -1,7 +1,7 @@
 /*================================================================================
 huffman.h
 Versión: 1.2
-Fecha: Junio 2025
+Fecha: Diciembre 2025
 Autores: Coyol Moreno Angel Zoe
          Ramirez Hernandez Christian Isaac
          Ramos Mendoza Miguel Angel
@@ -133,10 +133,51 @@ Usos:
     - Ordenación de la lista de árboles auxiliares en buildHuffmanTree.
 */
 int cmpFreq(const void *a, const void *b);
+/*
+getCoddedTree
 
+Descripción:
+    Serializa la estructura del árbol de Huffman en un flujo de bits. Utiliza
+    un recorrido DFS para representar nodos internos con '0' y hojas con '1' 
+    seguido del valor del byte (8 bits).
+
+Parámetros:
+    huff_tree : Puntero al árbol de Huffman construido.
+    out       : Puntero doble donde se asignará el buffer de bytes empaquetados.
+
+Devuelve:
+    Entero que representa la longitud total del árbol en bits. Retorna -1 si 
+    falla la asignación de memoria.
+*/
 int getCoddedTree(arbol_binario *huff_tree, byte** out);
+/*
+getCoddedTree_dfs
+
+Descripción:
+    Función auxiliar recursiva que realiza un recorrido en preorden para 
+    generar una cadena de caracteres '0' y '1' que representa el árbol.
+
+Parámetros:
+    t    : Árbol binario procesado.
+    p    : Posición actual en el recorrido.
+    buff : Buffer temporal para almacenar la secuencia de bits como caracteres.
+    i    : Índice del bit actual en el buffer.
+*/
 void getCoddedTree_dfs(arbol_binario *t, posicion p,char* buff,int *i);
 int getPackedSize(char *buff, int len);
+/*
+decodeTree
+
+Descripción:
+    Reconstruye un árbol de Huffman a partir de su representación serializada 
+    leída de un archivo comprimido. Utiliza una pila para gestionar la 
+    jerarquía de nodos durante la reconstrucción.
+
+Parámetros:
+    t          : Árbol binario donde se reconstruirá la estructura.
+    codded_t   : Buffer de bytes que contiene el árbol empaquetado.
+    tree_len   : Longitud del árbol en bits.
+*/
 void decodeTree(arbol_binario *t, byte *codded_t, unsigned short tree_len);
 
 
