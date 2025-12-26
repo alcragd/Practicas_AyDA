@@ -1,0 +1,4 @@
+﻿Archivo,Tamano_Original_Bytes,Tamano_Comprimido_Bytes,Tiempo_Compresion_Seg,Tiempo_Descompresion_Seg
+test_1_8GB.dat,1932735283,1932735610,174.192000,Saltado_Por_Tiempo
+test_1_2GB.dat,1288490189,1288490516,123.213000,Saltado_Por_Tiempo
+test_1_5GB.dat,1610612736,1610613063,161.378000,Saltado_Por_Tiempo
